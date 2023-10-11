@@ -12,7 +12,8 @@ public class KeyHandler implements KeyListener{
     }
     @Override
     public void keyPressed(KeyEvent e){
-        int code = e.getKeyCode();
+        // KEY BEING PRESSED
+        int code = e.getKeyCode(); // Returns the integer keyCode associated with the pressed key in this event.
 
         if(code == KeyEvent.VK_W){
             upPressed = true;
@@ -29,6 +30,7 @@ public class KeyHandler implements KeyListener{
     }
     @Override
     public void keyReleased(KeyEvent e){
+        // KEY BEING RELEASED
         int code = e.getKeyCode();
 
         if(code == KeyEvent.VK_W){
