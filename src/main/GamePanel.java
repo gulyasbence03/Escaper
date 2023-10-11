@@ -53,7 +53,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         while(gameThread != null){
             //UPDATE: update information such as character positions
-            upadte();
+            update();
             //DRAW: draw the screen with updated information
             repaint();
 
@@ -82,7 +82,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    public void upadte(){
+    public void update(){
         player.update();
     }
 
