@@ -16,9 +16,10 @@ public class Main {
 
         window.pack(); // Causes this window to be sized the preferred size and layouts of its components(=GamePanel)
 
-        window.setLocationRelativeTo(null);
+        window.setLocationRelativeTo(null); // Center window on host computer screen
         window.setVisible(true);
 
+        gamePanel.setupGame(); // Get objects to "spawn", draw them on screen
         gamePanel.startGameThread(); // To be able to stop and start processes (FPS control)
     }
 }

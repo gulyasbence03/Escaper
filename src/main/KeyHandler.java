@@ -4,11 +4,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener{
-
+    // WASD for controlling character up,left,down,right
     public boolean upPressed, downPressed, leftPressed, rightPressed;
     @Override
     public void keyTyped(KeyEvent e){
-
+        //Automatically generated, need to override
     }
     @Override
     public void keyPressed(KeyEvent e){

@@ -12,17 +12,26 @@ import java.util.Objects;
 public class Player extends Entity{
     GamePanel gp;
     KeyHandler keyH;
+    int hasKey = 0;
 
     public Player(GamePanel gp, KeyHandler keyH){
         this.gp = gp;
         this.keyH = keyH;
         setDefaultValues(); // set up coordinates, speed, direction
         getPlayerImage(); // load images to animate and draw character
+
+        solidArea = new Rectangle();
+        solidArea.x = 8;
+        solidArea.y = 24;
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY= solidArea.y;
+        solidArea.width =32;
+        solidArea.height = 24;
     }
 
     public void setDefaultValues(){
-        x = 100;
-        y = 100;
+        x = gp.screenWidth/2 - gp.tileSize/2;
+        y = gp.screenHeight/2 - gp.tileSize/2;
         speed = 4;
         direction = "down";
     }
@@ -45,26 +54,60 @@ public class Player extends Entity{
     }
 
     public void update(){
-        // If any key is pressed only then change the sprite of character
+
+        // Check tile collision, and reset at beginning to check every frame
+        collisionOnUp = false;
+        collisionOnDown = false;
+        collisionOnLeft = false;
+        collisionOnRight = false;
+
         if(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed){
             // Top right corner of the screen is (0,0)
             // X value increases to the right
             // Y value increases as they go down
             if(keyH.upPressed){
                 direction = "up";
-                y -= speed;
+                // Check tile collision
+                gp.collisionChecker.CheckTile(this);
+                // Check object collision
+                int objIndex = gp.collisionChecker.checkObject(this, true);
+                pickUpObject(objIndex);
+                if(!collisionOnUp){ // If collision false, player can move
+                    y -= speed;
+                }
             }
             if(keyH.downPressed){
                 direction = "down";
-                y += speed;
+                // Check tile collision
+                gp.collisionChecker.CheckTile(this);
+                // Check object collision
+                int objIndex = gp.collisionChecker.checkObject(this, true);
+                pickUpObject(objIndex);
+                if(!collisionOnDown){ // If collision false, player can move
+                    y += speed;
+                }
             }
             if(keyH.leftPressed){
                 direction = "left";
-                x -= speed;
+                // Check tile collision
+                gp.collisionChecker.CheckTile(this);
+                // Check object collision
+                int objIndex = gp.collisionChecker.checkObject(this, true);
+                pickUpObject(objIndex);
+                if(!collisionOnLeft){ // If collision false, player can move
+                    x -= speed;
+                }
             }
             if(keyH.rightPressed){
                 direction = "right";
-                x += speed;
+                // Check tile collision
+                gp.collisionChecker.CheckTile(this);
+                // Check object collision
+                int objIndex = gp.collisionChecker.checkObject(this, true);
+                pickUpObject(objIndex);
+                if(!collisionOnRight){ // If collision false, player can move
+                    x += speed;
+                }
             }
 
             // The update() is called 60(FPS) times a second
@@ -82,6 +125,25 @@ public class Player extends Entity{
         }
 
 
+    }
+
+    public void pickUpObject(int i){
+        if(i!=999 && gp.obj[i] != null){ // if remains 999, did not touch object
+            switch (gp.obj[i].name){
+                case "Key":
+                    hasKey++;
+                    gp.obj[i] = null;
+                    break;
+                case "Door":
+                    if(hasKey >0){
+                        gp.obj[i] = null;
+                        hasKey--;
+                    }
+                    break;
+            }
+
+
+        }
     }
     public void draw(Graphics2D g2){
         BufferedImage image = null;
