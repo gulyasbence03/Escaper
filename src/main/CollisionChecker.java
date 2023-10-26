@@ -8,115 +8,162 @@ public class CollisionChecker {
         this.gp = gp;
     }
 
-    public void CheckTile(Entity entity){
-        // Stores surrounding coordinates, and row,col to check collision on them
+    public void checkTile(Entity entity){
+        // Stores the surrounding coordinates of entity, and row,column to check collision on them
         int entityLeftX = entity.x + entity.solidArea.x;
         int entityRightX = entityLeftX + entity.solidArea.width;
         int entityTopY = entity.y + entity.solidArea.y;
         int entityBottomY = entityTopY + entity.solidArea.y;
 
-        int entityLeftCol = entityLeftX/gp.tileSize;
-        int entityRightCol = entityRightX/gp.tileSize;
-        int entityTopRow = entityTopY/gp.tileSize;
-        int entityBottomRow = entityBottomY/gp.tileSize;
+        int entityLeftCol = entityLeftX/ GamePanel.TILE_SIZE;
+        int entityRightCol = entityRightX/ GamePanel.TILE_SIZE;
+        int entityTopRow = entityTopY/ GamePanel.TILE_SIZE;
+        int entityBottomRow = entityBottomY/ GamePanel.TILE_SIZE;
 
-        int tileNum1, tileNum2; // type of tile close to player
+        int tileNum1;
+        int tileNum2; // type of tile close to entity
+        // There is two, because if player is between two tiles, both tiles needs to be checked
 
         switch (entity.direction){
-            // At direction checks if tile type is solid(by collision attribute)
-            // If one of 2 tiles are blocking the way, then to that direction do not let player move
+            // At direction checks if tile type is solid(by entity.collision attribute)
+            // If one of 2 tiles are blocking the way, then to that direction do not let entity move
             case "up":
-                entityTopRow = (entityTopY - entity.speed)/gp.tileSize;
-                tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
-                tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
-                if(gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision){
-                    entity.collisionOnUp = true; // can not move up
+                entityTopRow = (entityTopY - entity.speed)/ GamePanel.TILE_SIZE; // Row above entity
+                if(entityTopRow < GamePanel.MAX_SCREEN_ROW && entityTopRow > 0){
+                    tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow]; // Top left tile
+                    tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityTopRow]; // Top right tile
+                    if(gp.tileM.tile[tileNum1].isSolidTile || gp.tileM.tile[tileNum2].isSolidTile){
+                        entity.collisionOnUp = true; // can not move up
+                    }
+                }
+                else{
+                    if((double) (entityTopY - entity.speed) / GamePanel.TILE_SIZE < entity.solidArea.height*0.8/ GamePanel.TILE_SIZE){
+                        entity.collisionOnUp = true; // can not move up
+                    }
                 }
                 break;
             case "down":
-                entityBottomRow = (entityBottomY + entity.speed)/gp.tileSize;
-                tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
-                tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
-                if(gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision){
-                    entity.collisionOnDown = true; // can not move down
+                entityBottomRow = (entityBottomY + entity.speed)/ GamePanel.TILE_SIZE; // Row under entity
+                if (entityBottomRow < GamePanel.MAX_SCREEN_ROW && entityBottomRow > 0) {
+                    tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow]; // Bottom left tile
+                    tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow]; // Bottom right tile
+                    if(gp.tileM.tile[tileNum1].isSolidTile || gp.tileM.tile[tileNum2].isSolidTile){
+                        entity.collisionOnDown = true; // can not move down
+                    }
+                    else{
+                        entity.collisionOnDown = false;
+                    }
+                }
+                else{
+                    entity.collisionOnDown = true;
                 }
                 break;
             case "left":
-                entityLeftCol = (entityLeftX - entity.speed)/gp.tileSize;
-                tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
-                tileNum2 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
-                if(gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision){
-                    entity.collisionOnLeft = true; // can not move left
+                entityLeftCol = (entityLeftX - entity.speed)/ GamePanel.TILE_SIZE; // Column to the left from entity
+                if(entityLeftCol < GamePanel.MAX_SCREEN_COL && entityLeftCol > 0){
+                    tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow]; // Left side upper tile
+                    tileNum2 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow]; // Left side bottom tile
+                    if(gp.tileM.tile[tileNum1].isSolidTile || gp.tileM.tile[tileNum2].isSolidTile){
+                        entity.collisionOnLeft = true; // can not move left
+                    }
+                }
+                else{
+                    if((double) (entityLeftX - entity.speed)/ GamePanel.TILE_SIZE < 0){
+                        entity.collisionOnLeft = true; // can not move up
+                    }
                 }
                 break;
             case "right":
-                entityRightCol = (entityRightX + entity.speed)/gp.tileSize;
-                tileNum1 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
-                tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
-                if(gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision){
+                entityRightCol = (entityRightX + entity.speed)/ GamePanel.TILE_SIZE; // Column to the right from entity
+                if(entityRightCol < GamePanel.MAX_SCREEN_COL && entityRightCol >= 0){
+                    tileNum1 = gp.tileM.mapTileNum[entityRightCol][entityTopRow]; // Right side top tile
+                    tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow]; // Right side bottom tile
+                    if(gp.tileM.tile[tileNum1].isSolidTile || gp.tileM.tile[tileNum2].isSolidTile){
+                        entity.collisionOnRight = true; // can not move right
+                    }
+                }
+                else{
                     entity.collisionOnRight = true; // can not move right
                 }
+                break;
+
+            default:
                 break;
         }
 
     }
 
-    public int checkObject(Entity entity, boolean player){
+    public int checkObject(Entity entity, boolean isPlayer){
         // Check which object is player colliding with
-        int index = 999; // base number
-        for(int i = 0; i<gp.obj.length; i++){
+        int index = -1; // base number -1 (not possible)
 
-            if(gp.obj[i] != null){
-                // Get the entity's solid area position
+        // Looping through every object
+        for(int i = 0; i<gp.objectArray.length; i++){
+
+            if(gp.objectArray[i] != null){ // can be null if the array is not full
+
+                // Get the entity's solid area position(Entity hitbox)
                 entity.solidArea.x = entity.x + entity.solidArea.x;
                 entity.solidArea.y = entity.y + entity.solidArea.y;
-                // Get the object's solid area position
-                gp.obj[i].solidArea.x = gp.obj[i].x + gp.obj[i].solidArea.x;
-                gp.obj[i].solidArea.y = gp.obj[i].y + gp.obj[i].solidArea.y;
+                // Get the object's solid area position(Object hitbox)
+                gp.objectArray[i].solidArea.x = gp.objectArray[i].x + gp.objectArray[i].solidArea.x;
+                gp.objectArray[i].solidArea.y = gp.objectArray[i].y + gp.objectArray[i].solidArea.y;
 
 
                 switch (entity.direction){
                     case "up":
+                        // check if the next step of player is possible,
+                        // so move it's hitbox to check there collision
                         entity.solidArea.y -= entity.speed;
-                        if(entity.solidArea.intersects(gp.obj[i].solidArea)){ // if true these two collide
-                            if(gp.obj[i].collision){ // it means it is solid
-                                entity.collisionOnUp = true;
+                        // if true(2 rectangle intersects) these two collide
+                        if(entity.solidArea.intersects(gp.objectArray[i].solidArea)){
+                            if(gp.objectArray[i].isSolidObject){ // it means current object is solid
+                                entity.collisionOnUp = true; // entity can not go through it
                             }
-                            if(player){
-                                index = i;
+                            if(isPlayer){ // if entity is player
+                                index = i; // store the index of that object
                             }
                         }
                         break;
                     case "down":
+                        // check if the next step of player is possible,
+                        // so move it's hitbox to check there collision
                         entity.solidArea.y += entity.speed;
-                        if(entity.solidArea.intersects(gp.obj[i].solidArea)){ // if true these two collide
-                            if(gp.obj[i].collision){ // it means it is solid
-                                entity.collisionOnDown = true;
+                        // if true(2 rectangle intersects) these two collide
+                        if(entity.solidArea.intersects(gp.objectArray[i].solidArea)){
+                            if(gp.objectArray[i].isSolidObject){ // it means current object is solid
+                                entity.collisionOnDown = true; // entity can not go through it
                             }
-                            if(player){
-                                index = i;
+                            if(isPlayer){ // if entity is player
+                                index = i; // store the index of that object
                             }
                         }
                         break;
                     case "left":
+                        // check if the next step of player is possible,
+                        // so move it's hitbox to check there collision
                         entity.solidArea.x -= entity.speed;
-                        if(entity.solidArea.intersects(gp.obj[i].solidArea)){ // if true these two collide
-                            if(gp.obj[i].collision){ // it means it is solid
-                                entity.collisionOnLeft = true;
+                        // if true(2 rectangle intersects) these two collide
+                        if(entity.solidArea.intersects(gp.objectArray[i].solidArea)){
+                            if(gp.objectArray[i].isSolidObject){ // it means current object is solid
+                                entity.collisionOnLeft = true; // entity can not go through it
                             }
-                            if(player){
-                                index = i;
+                            if(isPlayer){ // if entity is player
+                                index = i; // store the index of that object
                             }
                         }
                         break;
                     case "right":
+                        // check if the next step of player is possible,
+                        // so move it's hitbox to check there collision
                         entity.solidArea.x += entity.speed;
-                        if(entity.solidArea.intersects(gp.obj[i].solidArea)){ // if true these two collide
-                            if(gp.obj[i].collision){ // it means it is solid
-                                entity.collisionOnRight = true;
+                        // if true(2 rectangle intersects) these two collide
+                        if(entity.solidArea.intersects(gp.objectArray[i].solidArea)){
+                            if(gp.objectArray[i].isSolidObject){ // it means current object is solid
+                                entity.collisionOnRight = true; // entity can not go through it
                             }
-                            if(player){
-                                index = i;
+                            if(isPlayer){ // if entity is player
+                                index = i; // store the index of that object
                             }
                         }
                         break;
@@ -124,8 +171,8 @@ public class CollisionChecker {
                 // Reset solidArea attributes
                 entity.solidArea.x = entity.solidAreaDefaultX;
                 entity.solidArea.y = entity.solidAreaDefaultY;
-                gp.obj[i].solidArea.x = gp.obj[i].solidAreaDefaultX;
-                gp.obj[i].solidArea.y = gp.obj[i].SolidAreaDefaultY;
+                gp.objectArray[i].solidArea.x = gp.objectArray[i].solidAreaDefaultX;
+                gp.objectArray[i].solidArea.y = gp.objectArray[i].SolidAreaDefaultY;
             }
         }
         return index;

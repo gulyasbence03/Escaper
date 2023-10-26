@@ -12,7 +12,8 @@ import java.util.Objects;
 public class Player extends Entity{
     GamePanel gp;
     KeyHandler keyH;
-    int hasKey = 0;
+
+    int hasKey = 0; // Number of Key Objects Player has
 
     public Player(GamePanel gp, KeyHandler keyH){
         this.gp = gp;
@@ -20,19 +21,26 @@ public class Player extends Entity{
         setDefaultValues(); // set up coordinates, speed, direction
         getPlayerImage(); // load images to animate and draw character
 
+        // Solid area(hitbox) is the area that is collidable with solid tiles(like walls) and objects
         solidArea = new Rectangle();
         solidArea.x = 8;
         solidArea.y = 24;
+        solidArea.width = 32;
+        solidArea.height = 24;
+
+        // These are needed, because we change the player's solid area
+        // to check if it's capable of moving that way( if there is solid object/tile the next step)
+        // Then reset these coordinates back on player
         solidAreaDefaultX = solidArea.x;
         solidAreaDefaultY= solidArea.y;
-        solidArea.width =32;
-        solidArea.height = 24;
     }
 
     public void setDefaultValues(){
-        x = gp.screenWidth/2 - gp.tileSize/2;
-        y = gp.screenHeight/2 - gp.tileSize/2;
-        speed = 4;
+        // These are the starting attributes, that the player gets
+        x = GamePanel.SCREEN_WIDTH /2 - GamePanel.TILE_SIZE /2;
+        y = GamePanel.SCREEN_HEIGHT /2 - GamePanel.TILE_SIZE /2;
+        speed = DEFAULT_SPEED;
+
         direction = "down";
     }
 
@@ -40,6 +48,7 @@ public class Player extends Entity{
         // Read images into variables from resource directory
         try{
             // Object.requireNonNull() to ensure that it is not null
+            // 2 sprites(image) for every direction to be able to animate movement
             up1 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("player/up1.png")));
             up2 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("player/up2.png")));
             down1 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("player/down1.png")));
@@ -48,8 +57,8 @@ public class Player extends Entity{
             left2 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("player/left2.png")));
             right1 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("player/right1.png")));
             right2 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("player/right2.png")));
-        }catch(IOException e){
-            e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -61,100 +70,120 @@ public class Player extends Entity{
         collisionOnLeft = false;
         collisionOnRight = false;
 
-        if(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed){
-            // Top right corner of the screen is (0,0)
+        if(keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed){    // If any movement key is being pressed
+            // Top left corner of the screen is (0,0)
             // X value increases to the right
-            // Y value increases as they go down
+            // Y value increases as we go down
+
+            // Set direction based on key pressed
             if(keyH.upPressed){
                 direction = "up";
-                // Check tile collision
-                gp.collisionChecker.CheckTile(this);
-                // Check object collision
-                int objIndex = gp.collisionChecker.checkObject(this, true);
-                pickUpObject(objIndex);
-                if(!collisionOnUp){ // If collision false, player can move
-                    y -= speed;
-                }
+                checkCollision(direction);
             }
             if(keyH.downPressed){
                 direction = "down";
-                // Check tile collision
-                gp.collisionChecker.CheckTile(this);
-                // Check object collision
-                int objIndex = gp.collisionChecker.checkObject(this, true);
-                pickUpObject(objIndex);
-                if(!collisionOnDown){ // If collision false, player can move
-                    y += speed;
-                }
+                checkCollision(direction);
             }
             if(keyH.leftPressed){
                 direction = "left";
-                // Check tile collision
-                gp.collisionChecker.CheckTile(this);
-                // Check object collision
-                int objIndex = gp.collisionChecker.checkObject(this, true);
-                pickUpObject(objIndex);
-                if(!collisionOnLeft){ // If collision false, player can move
-                    x -= speed;
-                }
+                checkCollision(direction);
             }
             if(keyH.rightPressed){
                 direction = "right";
-                // Check tile collision
-                gp.collisionChecker.CheckTile(this);
-                // Check object collision
-                int objIndex = gp.collisionChecker.checkObject(this, true);
-                pickUpObject(objIndex);
-                if(!collisionOnRight){ // If collision false, player can move
-                    x += speed;
-                }
+                checkCollision(direction);
             }
+            if(keyH.shiftPressed){
+                speed = (int) (DEFAULT_SPEED * 1.8);
+            }else{
+                speed = DEFAULT_SPEED;
+            }
+
 
             // The update() is called 60(FPS) times a second
             spriteCounter++; // every frame this is increased by 1
-            if(spriteCounter > 10){ // if it hits 10, it changes sprite
-                if(spriteNum == 1){
-                    spriteNum = 2;
-                }
-                else if(spriteNum == 2){
-                    spriteNum = 1;
-                }
-                spriteCounter = 0;
-            }
-            // Player image is changed every (10) frames.
+            spriteCounter = changeSpriteCounter(spriteCounter,gp);
         }
-
-
     }
 
-    public void pickUpObject(int i){
-        if(i!=999 && gp.obj[i] != null){ // if remains 999, did not touch object
-            switch (gp.obj[i].name){
+    private void checkCollision(String direction) {
+        // Check tile collision
+        gp.collisionChecker.checkTile(this);
+        // Check object collision, boolean parameter is true, if entity is player
+        int objIndex = gp.collisionChecker.checkObject(this, true);
+        // Interaction with object if there is one at the same tile
+        interactWithObject(objIndex);
+        if(direction.equals("up") && !collisionOnUp){ // If collision upwards false, player can move up
+            y -= speed;
+        }
+        if(direction.equals("down") && !collisionOnDown){ // If collision downwards false, player can move down
+            y += speed;
+        }
+        if(direction.equals("left") && !collisionOnLeft){ // If collision to the left is false, player can move left
+            x -= speed;
+        }
+        if(direction.equals("right") && !collisionOnRight){ // If collision to the right is false, player can move right
+            x += speed;
+        }
+    }
+
+    private int changeSpriteCounter(int spriteCounter, GamePanel gp) {
+        if(keyH.shiftPressed?spriteCounter>10:spriteCounter>20){
+            if(spriteNum == 1){
+                spriteNum = 2;
+                gp.playSoundEffect(1); // on every second step, step sound effect is being played
+            }
+            else if(spriteNum == 2){
+                spriteNum = 1;
+                gp.playSoundEffect(1); // on every second step, step sound effect is being played
+            }
+            return 0; // reset after sprite has been changes
+        }
+        // Player image is changed every (10) frames.
+
+        return spriteCounter;
+    }
+
+    // Parameter is the i. number of object in the Objects array(ObjectArray)
+    public void interactWithObject(int i){
+        if(i!=(-1) && gp.objectArray[i] != null){ // if remains -1(base), did not touch any object
+            switch (gp.objectArray[i].name){
                 case "Key":
+                    // If Player has touched the key remove it from screen,
+                    // add one to the number of keys the player has
                     hasKey++;
-                    gp.obj[i] = null;
+                    gp.playSoundEffect(2); // keys_pickup sound
+                    gp.objectArray[i] = null;
                     break;
                 case "Door":
+                    // If Player has touched the door and has any key(>0)
+                    // then remove the door, and use one key(-1 key)
                     if(hasKey >0){
-                        gp.obj[i] = null;
-                        hasKey--;
+                        if(gp.objectArray[i].spriteNum ==0){
+                            gp.playSoundEffect(3);
+                        }
+                        gp.objectArray[i].animationON = true;
+                        if(gp.objectArray[i].spriteNum == 1){
+                            hasKey--;
+                        }
+
                     }
                     break;
+
+                default:
+                    break;
             }
-
-
         }
     }
     public void draw(Graphics2D g2){
-        BufferedImage image = null;
+        BufferedImage image = null; // holds the current image of animation
 
-        // Draw the right image for animation, depending on which state is the animation is in.
+        // Draw the right image for animation, depending on which state the animation is in.
         switch (direction){
             case "up":
                 if(spriteNum == 1){
                     image = up1;
                 }
-                if(spriteNum == 2){
+                else{
                     image = up2;
                 }
                 break;
@@ -162,7 +191,7 @@ public class Player extends Entity{
                 if(spriteNum == 1){
                     image = down1;
                 }
-                if(spriteNum == 2){
+                else{
                     image = down2;
                 }
                 break;
@@ -170,7 +199,7 @@ public class Player extends Entity{
                 if(spriteNum == 1){
                     image = left1;
                 }
-                if(spriteNum == 2){
+                else{
                     image = left2;
                 }
                 break;
@@ -178,12 +207,14 @@ public class Player extends Entity{
                 if(spriteNum == 1){
                     image = right1;
                 }
-                if(spriteNum == 2){
+                else{
                     image = right2;
                 }
                 break;
+            default:
+                break;
         }
         // Draw the image at (x,y), width = tileSize, height = tileSize, and no Image observer = so null
-        g2.drawImage(image,x,y,gp.tileSize,gp.tileSize, null);
+        g2.drawImage(image,x,y, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE, null);
     }
 }

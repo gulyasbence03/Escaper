@@ -5,35 +5,47 @@ import object.SuperObject;
 import tile.TileManager;
 
 import javax.swing.JPanel;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.io.FileNotFoundException;
+
 
 public class GamePanel extends JPanel implements Runnable {
     //GAME SCREEN SETTINGS
-    final int originalTiteSize = 16; //16x16 tile
-    final int scale = 3;
-    public final int tileSize = originalTiteSize * scale; // 48 x 48 tile
-    public final int maxScreenCol = 16;
-    public final int maxScreenRow = 12;
-    public final int screenWidth = tileSize * maxScreenCol; //768 pixels
-    public final int screenHeight = tileSize * maxScreenRow; //576 pixels
+    static final int ORIGINAL_TILE_SIZE = 48; //16x16 tile
+    static final int SCALE = 1;
+    public static final int TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE; // 48 x 48 tile
+    public static final int MAX_SCREEN_COL = 16;
+    public static final int MAX_SCREEN_ROW = 12;
+    public static final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL; //768 pixels
+    public static final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW; //576 pixels
 
-    int FPS = 60;
-    KeyHandler keyH = new KeyHandler(); // Controls keyboard event
-    Thread gameThread;  // Main game thread, provides sleep for fps control
-    Player player = new Player(this, keyH);
-    TileManager tileM = new TileManager(this); // Tile object methods and management
+    // FPS
+    int fps = 60;
+
+    // SYSTEM
+    TileManager tileM = new TileManager(this); // Tile object methods
+    KeyHandler keyH = new KeyHandler(); // Controls keyboard events
     public CollisionChecker collisionChecker= new CollisionChecker(this); // Player collision with tile and object
-    public SuperObject[] obj = new SuperObject[10]; // All type of object array
     AssetSetter assetSetter = new AssetSetter(this); // Places Objects to right place on screen
+    Sound music = new Sound(); // Game song
+    Sound soundEffect = new Sound(); // Sound-effects
+    Thread gameThread;  // Main-game thread, provides sleep for fps control
+
+    // ENTITY AND OBJECT
+    private static final int MAX_OBJECTS = 10; // maximum number of objects that can be stored
+    Player player = new Player(this, keyH); // Player Entity
+    public SuperObject[] objectArray = new SuperObject[MAX_OBJECTS]; // Stores every Object
 
     public void setupGame(){
-        assetSetter.setObject(); // Places Object to right place on screen
+        assetSetter.setObject(); // Places every Object to right place on screen
+        //playMusic(0); // main song
     }
 
-    public GamePanel()  {
+    public GamePanel() throws FileNotFoundException {
         //Set game screen up with attributes
-        this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        this.setBackground(Color.black);
+        this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 
         // If set true, all the drawing from this component will be done in an offscreen painting buffer.
         // Improves game's rendering performance.
@@ -56,13 +68,13 @@ public class GamePanel extends JPanel implements Runnable {
         // For precise calculation:
         // 1000000000 (one billion nanoseconds) = 1 second
         // 1000 (one thousand milliseconds) = 1 second
-        double drawInternal = (double) 1000000000 /FPS; //  ~0.0166 seconds
-        double nextDrawTime = System.nanoTime() + drawInternal;
+        double drawInternal = (double) 1000000000 / fps; //  ~0.0166 seconds
+        double nextDrawTime = System.nanoTime() + drawInternal; // now + drawInternal
 
         while(gameThread != null){
-            //UPDATE: update information such as character positions
+            //UPDATE: update information, such as character positions
             update();
-            //DRAW: draw the screen with updated information
+            //DRAW: draw/paint the screen with updated information
             repaint();
 
             try {
@@ -85,33 +97,60 @@ public class GamePanel extends JPanel implements Runnable {
 
             } catch (InterruptedException e) {
                 // needed for the Thread.sleep()
-                throw new RuntimeException(e);
+                Thread.currentThread().interrupt(); // Thread got interrupted (sonar suggestion)
             }
         }
     }
 
     public void update(){
         player.update();
-    }
+    } // updates the player's position, direction, animation sprite etc.
 
+    @Override
     public void paintComponent(Graphics g){
         // Draws a given component
         super.paintComponent(g); // The parent class means JPanel here
 
         Graphics2D g2 = (Graphics2D) g;
-        // Tile
+        // Draw tiles
         tileM.draw(g2);
-        // Objects
-        for (SuperObject object: obj
+        // Draw every Object
+        int currentObject = -1;
+        for (SuperObject object: objectArray
              ) {
+            currentObject++;
             if(object != null){
-                    object.draw(g2,this);
+                // Has animation
+                if(object.animationON && object.spriteNum<object.animationLength){
+                    object.spriteNum++;
+                    if(object.spriteNum == object.animationLength){
+                        objectArray[currentObject] = null;
+                        object.animationON = false;
+                        object.spriteNum = object.animationLength+1;
+                    }
+                    object.draw(g2, object.spriteNum);
+                }
+                else if((!object.animationON && object.spriteNum<object.animationLength) || object.spriteNum == object.animationLength){
+                    object.draw(g2, object.spriteNum);
+                }
             }
 
         }
-        // Player
+        // Draws Player
         player.draw(g2);
 
         g2.dispose(); // Dispose of this graphics context and release any system resources that it is using.
+    }
+
+    public void playMusic(int i){ // plays the given i. number of song in the array of sounds.
+        music.setFile(i);
+        music.play();
+        music.loop(); // the song needs to be looped
+    }
+
+    public void playSoundEffect(int i){ // plays i. number of sound effect in the array of sounds
+        soundEffect.setFile(i);
+        soundEffect.play();
+        // not need to be looped
     }
 }
