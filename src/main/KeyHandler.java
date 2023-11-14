@@ -22,28 +22,70 @@ public class KeyHandler implements KeyListener{
         // KEY BEING PRESSED
         int code = e.getKeyCode(); // Returns the integer keyCode associated with the pressed key in this event.
 
-        if(code == KeyEvent.VK_W){
-            upPressed = true;
-        }
-        if(code == KeyEvent.VK_S){
-            downPressed = true;
-        }
-        if(code == KeyEvent.VK_A){
-            leftPressed = true;
-        }
-        if(code == KeyEvent.VK_D){
-            rightPressed = true;
-        }
-        if(code == KeyEvent.VK_SHIFT){
-            shiftPressed = true;
-        }
-        if(code == KeyEvent.VK_ESCAPE){
-            if(gp.gameState == GamePanel.GameState.PLAY_STATE){
-                gp.gameState = GamePanel.GameState.PAUSE_STATE;
+        if(gp.gameState == GamePanel.GameState.TITLE_STATE){
+            switch (gp.ui.command){
+                case NEW_GAME:
+                    if(code == KeyEvent.VK_W){
+                        gp.ui.command = UI.Command.QUIT;
+                    }
+                    if(code == KeyEvent.VK_S){
+                        gp.ui.command = UI.Command.LOAD_GAME;
+                    }
+                    if(code == KeyEvent.VK_ENTER) {
+                        gp.gameState = GamePanel.GameState.PLAY_STATE;
+                    }
+                    break;
+                case LOAD_GAME:
+                    if(code == KeyEvent.VK_W){
+                        gp.ui.command = UI.Command.NEW_GAME;
+                    }
+                    if(code == KeyEvent.VK_S){
+                        gp.ui.command = UI.Command.QUIT;
+                    }
+                    if(code == KeyEvent.VK_ENTER) {
+                        //EXECUTE
+                    }
+                    break;
+                case QUIT:
+                    if(code == KeyEvent.VK_W){
+                        gp.ui.command = UI.Command.LOAD_GAME;
+                    }
+                    if(code == KeyEvent.VK_S){
+                        gp.ui.command = UI.Command.NEW_GAME;
+                    }
+                    if(code == KeyEvent.VK_ENTER) {
+                        System.exit(0);
+                    }
+                    break;
+                default:
+                    break;
             }
-            else if(gp.gameState == GamePanel.GameState.PAUSE_STATE){
+        }
+
+        if(gp.gameState == GamePanel.GameState.PLAY_STATE){
+            if(code == KeyEvent.VK_W){
+                upPressed = true;
+            }
+            if(code == KeyEvent.VK_S){
+                downPressed = true;
+            }
+            if(code == KeyEvent.VK_A){
+                leftPressed = true;
+            }
+            if(code == KeyEvent.VK_D){
+                rightPressed = true;
+            }
+            if(code == KeyEvent.VK_SHIFT){
+                shiftPressed = true;
+            }
+
+        }
+        if(gp.gameState == GamePanel.GameState.PLAY_STATE && code == KeyEvent.VK_ESCAPE){
+            gp.gameState = GamePanel.GameState.PAUSE_STATE;
+        }
+        else if(gp.gameState == GamePanel.GameState.PAUSE_STATE && (code == KeyEvent.VK_ESCAPE)){
                 gp.gameState = GamePanel.GameState.PLAY_STATE;
-            }
+
         }
     }
     @Override

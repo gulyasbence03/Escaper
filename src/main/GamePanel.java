@@ -51,10 +51,10 @@ public class GamePanel extends JPanel implements Runnable {
     GameState gameState;
 
     public void setupGame(){
+        gameState = GameState.TITLE_STATE;
         assetSetter.setObject(); // Places every Object to right place on screen
         assetSetter.setNPC(); // Places every npc to right place on screen
         //playMusic(0); // main song
-        gameState = GameState.PLAY_STATE;
     }
 
     public GamePanel() throws FileNotFoundException {
@@ -137,7 +137,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         // TITLE SCREEN
         if(gameState == GameState.TITLE_STATE){
-
+            ui.draw(g2);
         }
 
         //OTHERS
