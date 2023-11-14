@@ -1,6 +1,7 @@
 package tile;
 
 import main.GamePanel;
+import main.UtilityTool;
 
 import javax.imageio.ImageIO;
 import java.awt.Graphics2D;
@@ -24,24 +25,32 @@ public class TileManager {
     }
 
     public void getTileImage(){
-        try{
             // Reading in tile images from res directory
             //STONE WALL
-            tile[0] = new Tile();
-            tile[0].image = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("tiles/stone.png")));
-            tile[0].isSolidTile = true;
+            setup(0,"stone_front",true);
+            setup(1,"stone_front_t",true);
+            setup(2,"stone_middle",true);
+            setup(3,"stone_top_left",true);
+            setup(4,"stone_top_right",true);
+            setup(5,"stone_middle_right",true);
             //GRASS FLOOR
-            tile[1] = new Tile();
-            tile[1].image = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("tiles/grass.png")));
+            setup(9,"grass",false);
             // CONCRETE FLOOR
-            tile[2] = new Tile();
-            tile[2].image = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("tiles/concrete.png")));
-
-        } catch (IOException e) {
-            throw new RuntimeException(e); // needed because of reading in from files
-        }
+            setup(8,"concrete",false);
     }
 
+    public void setup(int index, String imagePath,boolean isSolidTile){
+        UtilityTool uTool = new UtilityTool();
+
+        try{
+            tile[index] = new Tile();
+            tile[index].image = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("tiles/" + imagePath + ".png")));
+            tile[index].image = uTool.scaleImage(tile[index].image,GamePanel.TILE_SIZE,GamePanel.TILE_SIZE);
+            tile[index].isSolidTile = isSolidTile;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public void loadMap(String filePath) throws FileNotFoundException {
             // Load map from txt file, that is given in parameter(path)
         try {

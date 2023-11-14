@@ -1,5 +1,7 @@
 package main;
 
+import entity.Entity;
+import entity.NPC_POLICE;
 import entity.Player;
 import object.SuperObject;
 import tile.TileManager;
@@ -26,21 +28,33 @@ public class GamePanel extends JPanel implements Runnable {
 
     // SYSTEM
     TileManager tileM = new TileManager(this); // Tile object methods
-    KeyHandler keyH = new KeyHandler(); // Controls keyboard events
-    public CollisionChecker collisionChecker= new CollisionChecker(this); // Player collision with tile and object
+    KeyHandler keyH = new KeyHandler(this); // Controls keyboard events
     AssetSetter assetSetter = new AssetSetter(this); // Places Objects to right place on screen
     Sound music = new Sound(); // Game song
     Sound soundEffect = new Sound(); // Sound-effects
+    public CollisionChecker collisionChecker= new CollisionChecker(this); // Player collision with tile and object
+    public UI ui = new UI(this);
     Thread gameThread;  // Main-game thread, provides sleep for fps control
+
 
     // ENTITY AND OBJECT
     private static final int MAX_OBJECTS = 10; // maximum number of objects that can be stored
     Player player = new Player(this, keyH); // Player Entity
     public SuperObject[] objectArray = new SuperObject[MAX_OBJECTS]; // Stores every Object
+    public Entity[] npcPolice = new Entity[10]; // NPC Entity
+    // GAME STATE
+    enum GameState{
+        PLAY_STATE,
+        PAUSE_STATE,
+        TITLE_STATE
+    }
+    GameState gameState;
 
     public void setupGame(){
         assetSetter.setObject(); // Places every Object to right place on screen
+        assetSetter.setNPC(); // Places every npc to right place on screen
         //playMusic(0); // main song
+        gameState = GameState.PLAY_STATE;
     }
 
     public GamePanel() throws FileNotFoundException {
@@ -103,41 +117,67 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update(){
-        player.update();
+        if(gameState == GameState.PLAY_STATE){
+            // Player
+            player.update();
+            // NPC
+            for(int i = 0;i<npcPolice.length;i++){
+                if(npcPolice[i] != null){
+                    npcPolice[i].update();
+                }
+            }
+        }
     } // updates the player's position, direction, animation sprite etc.
 
     @Override
     public void paintComponent(Graphics g){
         // Draws a given component
         super.paintComponent(g); // The parent class means JPanel here
-
         Graphics2D g2 = (Graphics2D) g;
-        // Draw tiles
-        tileM.draw(g2);
-        // Draw every Object
-        int currentObject = -1;
-        for (SuperObject object: objectArray
-             ) {
-            currentObject++;
-            if(object != null){
-                // Has animation
-                if(object.animationON && object.spriteNum<object.animationLength){
-                    object.spriteNum++;
-                    if(object.spriteNum == object.animationLength){
-                        objectArray[currentObject] = null;
-                        object.animationON = false;
-                        object.spriteNum = object.animationLength+1;
+
+        // TITLE SCREEN
+        if(gameState == GameState.TITLE_STATE){
+
+        }
+
+        //OTHERS
+        else{
+            // Draw tiles
+            tileM.draw(g2);
+            // Draw every Object
+            int currentObject = -1;
+            for (SuperObject object: objectArray
+            ) {
+                currentObject++;
+                if(object != null){
+                    // Has animation
+                    if(object.animationON && object.spriteNum<object.animationLength){
+                        object.spriteNum++;
+                        if(object.spriteNum == object.animationLength){
+                            objectArray[currentObject] = null;
+                            object.animationON = false;
+                            object.spriteNum = object.animationLength+1;
+                        }
+                        object.draw(g2, object.spriteNum);
                     }
-                    object.draw(g2, object.spriteNum);
+                    else if((!object.animationON && object.spriteNum<object.animationLength) || object.spriteNum == object.animationLength){
+                        object.draw(g2, object.spriteNum);
+                    }
                 }
-                else if((!object.animationON && object.spriteNum<object.animationLength) || object.spriteNum == object.animationLength){
-                    object.draw(g2, object.spriteNum);
+            }
+            // NPC
+            for(int i = 0; i<npcPolice.length;i++){
+                if(npcPolice[i] != null){
+                    npcPolice[i].draw(g2);
                 }
             }
 
+            // Draws Player
+            player.draw(g2);
+
+            // UI
+            ui.draw(g2);
         }
-        // Draws Player
-        player.draw(g2);
 
         g2.dispose(); // Dispose of this graphics context and release any system resources that it is using.
     }

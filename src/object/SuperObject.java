@@ -1,6 +1,7 @@
 package object;
 
 import main.GamePanel;
+import main.UtilityTool;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -16,10 +17,12 @@ public class SuperObject {
     // solidAreaDefault coordinates to reset after collision check
     public Rectangle solidArea = new Rectangle(0,0,48,48);
     public int solidAreaDefaultX = 0;
-    public int SolidAreaDefaultY = 0;
+    public int solidAreaDefaultY = 0;
     public int spriteNum = 0;
     public boolean animationON = false;
     public int animationLength = 0;
+
+    UtilityTool uTool = new UtilityTool();
 
     public SuperObject(){
         this.images = new BufferedImage[20];

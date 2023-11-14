@@ -2,6 +2,7 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import main.UtilityTool;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -13,9 +14,10 @@ public class Player extends Entity{
     GamePanel gp;
     KeyHandler keyH;
 
-    int hasKey = 0; // Number of Key Objects Player has
+    public int hasKey = 0; // Number of Key Objects Player has
 
     public Player(GamePanel gp, KeyHandler keyH){
+        super(gp);
         this.gp = gp;
         this.keyH = keyH;
         setDefaultValues(); // set up coordinates, speed, direction
@@ -45,21 +47,31 @@ public class Player extends Entity{
     }
 
     public void getPlayerImage(){
+            up1 = setup("up1");
+            up2 = setup("up2");
+            down1 = setup("down1");
+            down2 = setup("down2");
+            left1 = setup("left1");
+            left2 = setup("left2");
+            right1 = setup("right1");
+            right2 = setup("right2");
+    }
+
+    public BufferedImage setup(String imageName){
         // Read images into variables from resource directory
-        try{
-            // Object.requireNonNull() to ensure that it is not null
-            // 2 sprites(image) for every direction to be able to animate movement
-            up1 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("player/up1.png")));
-            up2 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("player/up2.png")));
-            down1 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("player/down1.png")));
-            down2 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("player/down2.png")));
-            left1 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("player/left1.png")));
-            left2 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("player/left2.png")));
-            right1 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("player/right1.png")));
-            right2 = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("player/right2.png")));
+        // Object.requireNonNull() to ensure that it is not null
+        // 2 sprites(image) for every direction to be able to animate movement
+        UtilityTool uTool = new UtilityTool();
+        BufferedImage image = null;
+
+        try {
+            image = ImageIO.read(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("player/" + imageName + ".png")));
+            image = uTool.scaleImage(image,GamePanel.TILE_SIZE,GamePanel.TILE_SIZE);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        return image;
     }
 
     public void update(){
@@ -108,10 +120,16 @@ public class Player extends Entity{
     private void checkCollision(String direction) {
         // Check tile collision
         gp.collisionChecker.checkTile(this);
+
         // Check object collision, boolean parameter is true, if entity is player
         int objIndex = gp.collisionChecker.checkObject(this, true);
+
         // Interaction with object if there is one at the same tile
         interactWithObject(objIndex);
+
+        // Check npc collision
+        int npcIndex = gp.collisionChecker.checkEntity(this, gp.npcPolice);
+
         if(direction.equals("up") && !collisionOnUp){ // If collision upwards false, player can move up
             y -= speed;
         }

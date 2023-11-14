@@ -1,5 +1,7 @@
 package main;
 
+import entity.Entity;
+import entity.NPC_POLICE;
 import object.ObjDoor;
 import object.ObjKey;
 
@@ -55,5 +57,15 @@ public class AssetSetter {
         gp.objectArray[7] = new ObjKey();
         gp.objectArray[7].x = 2 * GamePanel.TILE_SIZE;
         gp.objectArray[7].y = 3 * GamePanel.TILE_SIZE;
+    }
+
+    public void setNPC(){
+        gp.npcPolice[0] = new NPC_POLICE(gp);
+        gp.npcPolice[0].x = GamePanel.TILE_SIZE*11;
+        gp.npcPolice[0].y = GamePanel.TILE_SIZE*2;
+
+        gp.npcPolice[1] = new NPC_POLICE(gp);
+        gp.npcPolice[1].x = GamePanel.TILE_SIZE*3;
+        gp.npcPolice[1].y = GamePanel.TILE_SIZE*9;
     }
 }

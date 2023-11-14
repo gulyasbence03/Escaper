@@ -4,9 +4,15 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener{
+    GamePanel gp;
     // WASD for controlling character up,left,down,right
     public boolean upPressed, downPressed, leftPressed, rightPressed;
     public boolean shiftPressed;
+
+    public KeyHandler(GamePanel gp){
+        this.gp = gp;
+    }
+
     @Override
     public void keyTyped(KeyEvent e){
         //Automatically generated, need to override, even if not used
@@ -30,6 +36,14 @@ public class KeyHandler implements KeyListener{
         }
         if(code == KeyEvent.VK_SHIFT){
             shiftPressed = true;
+        }
+        if(code == KeyEvent.VK_ESCAPE){
+            if(gp.gameState == GamePanel.GameState.PLAY_STATE){
+                gp.gameState = GamePanel.GameState.PAUSE_STATE;
+            }
+            else if(gp.gameState == GamePanel.GameState.PAUSE_STATE){
+                gp.gameState = GamePanel.GameState.PLAY_STATE;
+            }
         }
     }
     @Override
