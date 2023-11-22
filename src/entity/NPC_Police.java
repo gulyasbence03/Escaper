@@ -10,11 +10,14 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Random;
 
-public class NPC_POLICE extends Entity{
-    public  NPC_POLICE(GamePanel gp){
+public class NPC_Police extends Entity{
+    public NPC_Police(GamePanel gp){
         super(gp);
         direction = "down";
         speed = DEFAULT_SPEED;
+        maxLife = 2;
+        life = maxLife;
+        name = "npc";
         getNpcImage();
 
         // Solid area(hitbox) is the area that is collidable with solid tiles(like walls) and objects

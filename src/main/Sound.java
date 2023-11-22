@@ -21,6 +21,9 @@ public class Sound {
         soundURL[2] = getClass().getClassLoader().getResource("sound/keys_pickup.wav");
         // Cell door opening/close sound-effect
         soundURL[3] = getClass().getClassLoader().getResource("sound/cell_door_opening.wav");
+        soundURL[4] = getClass().getClassLoader().getResource("sound/swing.wav");
+        soundURL[5] = getClass().getClassLoader().getResource("sound/hurt.wav");
+        soundURL[6] = getClass().getClassLoader().getResource("sound/death.wav");
     }
 
     public void setFile(int i){

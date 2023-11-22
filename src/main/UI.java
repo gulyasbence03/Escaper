@@ -1,5 +1,7 @@
 package main;
 
+import entity.Entity;
+import object.ObjHeart;
 import object.ObjKey;
 
 import java.awt.*;
@@ -10,6 +12,8 @@ public class UI {
     Graphics2D g2;
     Font arialFont;
     BufferedImage keyImage;
+    BufferedImage heartImage;
+    BufferedImage blankHeartImage;
     // Command
     enum Command{
         NEW_GAME,
@@ -21,8 +25,12 @@ public class UI {
     public UI(GamePanel gp){
         this.gp = gp;
         this.arialFont = new Font("Arial", Font.BOLD, 18);
-        ObjKey key = new ObjKey();
-        keyImage = key.images[0];
+        ObjKey key = new ObjKey(gp);
+        keyImage = key.down1;
+
+        Entity heart = new ObjHeart(gp);
+        heartImage = heart.imageHeart;
+        blankHeartImage = heart.imageBlankHeart;
     }
 
     public void draw(Graphics2D g2){
@@ -36,9 +44,30 @@ public class UI {
             g2.setColor(Color.orange);
             g2.drawImage(keyImage, -10,-18,GamePanel.TILE_SIZE*2,GamePanel.TILE_SIZE*2,null);
             g2.drawString("x " + (gp.player.hasKey), 68, 34);
+            drawPlayerLife();
         }
         if(gp.gameState == GamePanel.GameState.PAUSE_STATE){
             drawPauseScreen();
+        }
+    }
+
+    private void drawPlayerLife() {
+        int x = GamePanel.SCREEN_WIDTH - GamePanel.TILE_SIZE*3 - GamePanel.TILE_SIZE/3;
+        int y = GamePanel.TILE_SIZE/4;
+        int i = 0;
+        while(i<gp.player.maxLife){
+            g2.drawImage(gp.ui.blankHeartImage,x,y,GamePanel.TILE_SIZE,GamePanel.TILE_SIZE,null);
+            i++;
+            x += GamePanel.TILE_SIZE;
+        }
+
+        x = GamePanel.SCREEN_WIDTH - GamePanel.TILE_SIZE*3 - GamePanel.TILE_SIZE/3;
+        y = GamePanel.TILE_SIZE/4;
+        i = 0;
+        while(i<gp.player.life){
+            g2.drawImage(gp.ui.heartImage,x,y,GamePanel.TILE_SIZE,GamePanel.TILE_SIZE,null);
+            i++;
+            x += GamePanel.TILE_SIZE;
         }
     }
 

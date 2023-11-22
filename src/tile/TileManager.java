@@ -33,6 +33,7 @@ public class TileManager {
             setup(3,"stone_top_left",true);
             setup(4,"stone_top_right",true);
             setup(5,"stone_middle_right",true);
+            setup(6,"stone_top_rightcorner",true);
             //GRASS FLOOR
             setup(9,"grass",false);
             // CONCRETE FLOOR

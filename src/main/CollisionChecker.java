@@ -210,7 +210,7 @@ public class CollisionChecker {
                     case "down":
                         // check if the next step of player is possible,
                         // so move it's hitbox to check there collision
-                        entity.solidArea.y += entity.solidAreaDefaultY;
+                        entity.solidArea.y += entity.speed;
                         // if true(2 rectangle intersects) these two collide
                         if(entity.solidArea.intersects(target[i].solidArea)){
                             entity.collisionOnDown = true; // entity can not go through it

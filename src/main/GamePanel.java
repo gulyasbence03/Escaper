@@ -1,9 +1,7 @@
 package main;
 
 import entity.Entity;
-import entity.NPC_POLICE;
 import entity.Player;
-import object.SuperObject;
 import tile.TileManager;
 
 import javax.swing.JPanel;
@@ -11,6 +9,9 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 
 public class GamePanel extends JPanel implements Runnable {
@@ -28,20 +29,23 @@ public class GamePanel extends JPanel implements Runnable {
 
     // SYSTEM
     TileManager tileM = new TileManager(this); // Tile object methods
-    KeyHandler keyH = new KeyHandler(this); // Controls keyboard events
+    public KeyHandler keyH = new KeyHandler(this); // Controls keyboard events
     AssetSetter assetSetter = new AssetSetter(this); // Places Objects to right place on screen
     Sound music = new Sound(); // Game song
     Sound soundEffect = new Sound(); // Sound-effects
     public CollisionChecker collisionChecker= new CollisionChecker(this); // Player collision with tile and object
     public UI ui = new UI(this);
+    public EventHandler eventHandler = new EventHandler(this);
     Thread gameThread;  // Main-game thread, provides sleep for fps control
 
 
     // ENTITY AND OBJECT
     private static final int MAX_OBJECTS = 10; // maximum number of objects that can be stored
     Player player = new Player(this, keyH); // Player Entity
-    public SuperObject[] objectArray = new SuperObject[MAX_OBJECTS]; // Stores every Object
+    public Entity[] objectArray = new Entity[MAX_OBJECTS]; // Stores every Object
     public Entity[] npcPolice = new Entity[10]; // NPC Entity
+    ArrayList<Entity> entityList = new ArrayList<>();
+
     // GAME STATE
     enum GameState{
         PLAY_STATE,
@@ -54,7 +58,6 @@ public class GamePanel extends JPanel implements Runnable {
         gameState = GameState.TITLE_STATE;
         assetSetter.setObject(); // Places every Object to right place on screen
         assetSetter.setNPC(); // Places every npc to right place on screen
-        //playMusic(0); // main song
     }
 
     public GamePanel() throws FileNotFoundException {
@@ -123,7 +126,12 @@ public class GamePanel extends JPanel implements Runnable {
             // NPC
             for(int i = 0;i<npcPolice.length;i++){
                 if(npcPolice[i] != null){
-                    npcPolice[i].update();
+                    if(npcPolice[i].status == Entity.Status.ALIVE){
+                        npcPolice[i].update();
+                    }
+                    if(npcPolice[i].status == Entity.Status.DEAD){
+                        npcPolice[i] = null;
+                    }
                 }
             }
         }
@@ -144,36 +152,31 @@ public class GamePanel extends JPanel implements Runnable {
         else{
             // Draw tiles
             tileM.draw(g2);
-            // Draw every Object
-            int currentObject = -1;
-            for (SuperObject object: objectArray
-            ) {
-                currentObject++;
-                if(object != null){
-                    // Has animation
-                    if(object.animationON && object.spriteNum<object.animationLength){
-                        object.spriteNum++;
-                        if(object.spriteNum == object.animationLength){
-                            objectArray[currentObject] = null;
-                            object.animationON = false;
-                            object.spriteNum = object.animationLength+1;
-                        }
-                        object.draw(g2, object.spriteNum);
-                    }
-                    else if((!object.animationON && object.spriteNum<object.animationLength) || object.spriteNum == object.animationLength){
-                        object.draw(g2, object.spriteNum);
-                    }
-                }
-            }
-            // NPC
+
+            // Add entities to the list
+            entityList.add(player);
             for(int i = 0; i<npcPolice.length;i++){
                 if(npcPolice[i] != null){
-                    npcPolice[i].draw(g2);
+                    entityList.add(npcPolice[i]);
                 }
             }
 
-            // Draws Player
-            player.draw(g2);
+            for(int i = 0; i<objectArray.length; i++){
+                if(objectArray[i] != null){
+                    entityList.add(objectArray[i]);
+                }
+            }
+
+            // Sort
+            Collections.sort(entityList, Comparator.comparingInt(e -> e.y));
+
+            // Draw entities
+            for(int i = 0; i < entityList.size(); i++){
+                entityList.get(i).draw(g2);
+            }
+
+            // Empty entityList
+            entityList.clear();
 
             // UI
             ui.draw(g2);

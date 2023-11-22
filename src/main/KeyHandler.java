@@ -6,7 +6,7 @@ import java.awt.event.KeyListener;
 public class KeyHandler implements KeyListener{
     GamePanel gp;
     // WASD for controlling character up,left,down,right
-    public boolean upPressed, downPressed, leftPressed, rightPressed;
+    public boolean upPressed, downPressed, leftPressed, rightPressed, spacePressed;
     public boolean shiftPressed;
 
     public KeyHandler(GamePanel gp){
@@ -63,6 +63,13 @@ public class KeyHandler implements KeyListener{
         }
 
         if(gp.gameState == GamePanel.GameState.PLAY_STATE){
+            if(code == KeyEvent.VK_SPACE){
+                spacePressed = true;
+                upPressed = false;
+                downPressed = false;
+                leftPressed = false;
+                rightPressed = false;
+            }
             if(code == KeyEvent.VK_W){
                 upPressed = true;
             }
@@ -78,7 +85,6 @@ public class KeyHandler implements KeyListener{
             if(code == KeyEvent.VK_SHIFT){
                 shiftPressed = true;
             }
-
         }
         if(gp.gameState == GamePanel.GameState.PLAY_STATE && code == KeyEvent.VK_ESCAPE){
             gp.gameState = GamePanel.GameState.PAUSE_STATE;
@@ -107,6 +113,9 @@ public class KeyHandler implements KeyListener{
         }
         if(code == KeyEvent.VK_SHIFT){
             shiftPressed = false;
+        }
+        if(code == KeyEvent.VK_SPACE){
+            spacePressed = false;
         }
     }
 }
