@@ -2,6 +2,8 @@ package main;
 
 import entity.Entity;
 
+import java.io.Serializable;
+
 public class CollisionChecker {
     GamePanel gp;
     public CollisionChecker(GamePanel gp){
@@ -24,7 +26,13 @@ public class CollisionChecker {
         int tileNum2; // type of tile close to entity
         // There is two, because if player is between two tiles, both tiles needs to be checked
 
-        switch (entity.direction){
+        // use a temporal diresction when it's being knockbacked
+        String direction = entity.direction;
+        if(entity.knockBack){
+            direction = entity.knockBackDirection;
+        }
+
+        switch (direction){
             // At direction checks if tile type is solid(by entity.collision attribute)
             // If one of 2 tiles are blocking the way, then to that direction do not let entity move
             case "up":
@@ -97,6 +105,12 @@ public class CollisionChecker {
         // Check which object is player colliding with
         int index = -1; // base number -1 (not possible)
 
+        // use a temporal diresction when it's being knockbacked
+        String direction = entity.direction;
+        if(entity.knockBack){
+            direction = entity.knockBackDirection;
+        }
+
         // Looping through every object
         for(int i = 0; i<gp.objectArray.length; i++){
 
@@ -110,7 +124,7 @@ public class CollisionChecker {
                 gp.objectArray[i].solidArea.y = gp.objectArray[i].y + gp.objectArray[i].solidArea.y;
 
 
-                switch (entity.direction){
+                switch (direction){
                     case "up":
                         // check if the next step of player is possible,
                         // so move it's hitbox to check there collision
@@ -183,6 +197,12 @@ public class CollisionChecker {
         // Check which object is player colliding with
         int index = -1; // base number -1 (not possible)
 
+        // use a temporal diresction when it's being knockbacked
+        String direction = entity.direction;
+        if(entity.knockBack){
+            direction = entity.knockBackDirection;
+        }
+
         // Looping through every object
         for(int i = 0; i<target.length; i++){
 
@@ -195,8 +215,7 @@ public class CollisionChecker {
                 target[i].solidArea.x = target[i].x + target[i].solidArea.x;
                 target[i].solidArea.y = target[i].y + target[i].solidArea.y;
 
-
-                switch (entity.direction){
+                switch (direction){
                     case "up":
                         // check if the next step of player is possible,
                         // so move it's hitbox to check there collision
@@ -248,65 +267,70 @@ public class CollisionChecker {
         return index;
     }
 
-    public void checkPlayer(Entity entity){
-        // Check which object is player colliding with
-        int index = -1; // base number -1 (not possible)
-
+    public boolean checkPlayer(Entity entity){
         // Looping through every object
 
-            if(gp.player != null){ // can be null if the array is not full
+        if(gp.player != null){ // can be null if the array is not full
 
-                // Get the entity's solid area position(Entity hitbox)
-                entity.solidArea.x = entity.x + entity.solidArea.x;
-                entity.solidArea.y = entity.y + entity.solidArea.y;
-                // Get the object's solid area position(Object hitbox)
-                gp.player.solidArea.x = gp.player.x + gp.player.solidArea.x;
-                gp.player.solidArea.y = gp.player.y + gp.player.solidArea.y;
+            // Get the entity's solid area position(Entity hitbox)
+            entity.solidArea.x = entity.x + entity.solidArea.x;
+            entity.solidArea.y = entity.y + entity.solidArea.y;
+            // Get the object's solid area position(Object hitbox)
+            gp.player.solidArea.x = gp.player.x + gp.player.solidArea.x;
+            gp.player.solidArea.y = gp.player.y + gp.player.solidArea.y;
 
+            // use a temporal diresction when it's being knockbacked
+            String direction = entity.direction;
 
-                switch (entity.direction){
-                    case "up":
-                        // check if the next step of player is possible,
-                        // so move it's hitbox to check there collision
-                        entity.solidArea.y -= entity.speed;
-                        // if true(2 rectangle intersects) these two collide
-                        if(entity.solidArea.intersects(gp.player.solidArea)){
-                            entity.collisionOnUp = true; // entity can not go through it
-                        }
-                        break;
-                    case "down":
-                        // check if the next step of player is possible,
-                        // so move it's hitbox to check there collision
-                        entity.solidArea.y += entity.solidAreaDefaultY;
-                        // if true(2 rectangle intersects) these two collide
-                        if(entity.solidArea.intersects(gp.player.solidArea)){
-                            entity.collisionOnDown = true; // entity can not go through it
-                        }
-                        break;
-                    case "left":
-                        // check if the next step of player is possible,
-                        // so move it's hitbox to check there collision
-                        entity.solidArea.x -= entity.speed;
-                        // if true(2 rectangle intersects) these two collide
-                        if(entity.solidArea.intersects(gp.player.solidArea)){
-                            entity.collisionOnLeft = true; // entity can not go through it
-                        }
-                        break;
-                    case "right":
-                        // check if the next step of player is possible,
-                        // so move it's hitbox to check there collision
-                        entity.solidArea.x += entity.speed;
-                        // if true(2 rectangle intersects) these two collide
-                        if(entity.solidArea.intersects(gp.player.solidArea)){
-                            entity.collisionOnRight = true; // entity can not go through it
-                        }
-                        break;
-                }
-                // Reset solidArea attributes
-                entity.solidArea.x = entity.solidAreaDefaultX;
-                entity.solidArea.y = entity.solidAreaDefaultY;
-                gp.player.solidArea.x = gp.player.solidAreaDefaultX;
-                gp.player.solidArea.y = gp.player.solidAreaDefaultY;
+            if(entity.knockBack){
+                direction = entity.knockBackDirection;
             }
+
+
+            switch (direction){
+                case "up":
+                    // check if the next step of player is possible,
+                    // so move it's hitbox to check there collision
+                    entity.solidArea.y -= entity.speed;
+                    // if true(2 rectangle intersects) these two collide
+                    if(entity.solidArea.intersects(gp.player.solidArea)){
+                        entity.collisionOnUp = true; // entity can not go through it
+                    }
+                    break;
+                case "down":
+                    // check if the next step of player is possible,
+                    // so move it's hitbox to check there collision
+                    entity.solidArea.y += entity.solidAreaDefaultY;
+                    // if true(2 rectangle intersects) these two collide
+                    if(entity.solidArea.intersects(gp.player.solidArea)){
+                        entity.collisionOnDown = true; // entity can not go through it
+                    }
+                    break;
+                case "left":
+                    // check if the next step of player is possible,
+                    // so move it's hitbox to check there collision
+                    entity.solidArea.x -= entity.speed;
+                    // if true(2 rectangle intersects) these two collide
+                    if(entity.solidArea.intersects(gp.player.solidArea)){
+                        entity.collisionOnLeft = true; // entity can not go through it
+                    }
+                    break;
+                case "right":
+                    // check if the next step of player is possible,
+                    // so move it's hitbox to check there collision
+                    entity.solidArea.x += entity.speed;
+                    // if true(2 rectangle intersects) these two collide
+                    if(entity.solidArea.intersects(gp.player.solidArea)){
+                        entity.collisionOnRight = true; // entity can not go through it
+                    }
+                    break;
+            }
+            // Reset solidArea attributes
+            entity.solidArea.x = entity.solidAreaDefaultX;
+            entity.solidArea.y = entity.solidAreaDefaultY;
+            gp.player.solidArea.x = gp.player.solidAreaDefaultX;
+            gp.player.solidArea.y = gp.player.solidAreaDefaultY;
+        }
+        return entity.collisionOnRight || entity.collisionOnDown || entity.collisionOnLeft || entity.collisionOnUp;
     }
 }

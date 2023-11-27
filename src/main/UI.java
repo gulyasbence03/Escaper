@@ -2,7 +2,6 @@ package main;
 
 import entity.Entity;
 import object.ObjHeart;
-import object.ObjKey;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -15,18 +14,19 @@ public class UI {
     BufferedImage heartImage;
     BufferedImage blankHeartImage;
     // Command
-    enum Command{
+    public enum Command{
+        NO_COMMAND,
         NEW_GAME,
         LOAD_GAME,
-        QUIT
+        QUIT,
+        RETRY,
+        MENU
     }
-    Command command = Command.NEW_GAME;
+    public Command command = Command.NO_COMMAND;
 
     public UI(GamePanel gp){
         this.gp = gp;
         this.arialFont = new Font("Arial", Font.BOLD, 18);
-        ObjKey key = new ObjKey(gp);
-        keyImage = key.down1;
 
         Entity heart = new ObjHeart(gp);
         heartImage = heart.imageHeart;
@@ -40,20 +40,108 @@ public class UI {
         }
 
         if(gp.gameState == GamePanel.GameState.PLAY_STATE){
-            g2.setFont(arialFont);
-            g2.setColor(Color.orange);
-            g2.drawImage(keyImage, -10,-18,GamePanel.TILE_SIZE*2,GamePanel.TILE_SIZE*2,null);
-            g2.drawString("x " + (gp.player.hasKey), 68, 34);
             drawPlayerLife();
+            drawInventory();
         }
         if(gp.gameState == GamePanel.GameState.PAUSE_STATE){
             drawPauseScreen();
         }
+        if(gp.gameState == GamePanel.GameState.GAME_OVER){
+            drawGameOverScreen();
+        }
+        if(gp.gameState == GamePanel.GameState.ESCAPED){
+            drawEscapedScreen();
+        }
     }
+
+    private void drawEscapedScreen() {
+        // CUTSCENE
+
+
+        g2.setColor(new Color(0f,0f,0f,0.5f));
+        g2.fillRect(0,0,GamePanel.SCREEN_WIDTH,GamePanel.SCREEN_HEIGHT);
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN,80F));
+        String text = "You Escaped!";
+        g2.setColor(Color.white);
+        int y = GamePanel.SCREEN_HEIGHT/2;
+        int x = getXforCenteredText(text);
+        g2.drawString(text,x,y);
+
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN,30F));
+
+        text = "MENU";
+        x = getXforCenteredText(text);
+        y += GamePanel.TILE_SIZE;
+        g2.drawString(text,x,y);
+        if(command == Command.MENU){
+            g2.drawString(">",x-GamePanel.TILE_SIZE/2,y);
+        }
+        text = "QUIT";
+        x = getXforCenteredText(text);
+        y += GamePanel.TILE_SIZE;
+        g2.drawString(text,x,y);
+        if(command == Command.QUIT){
+            g2.drawString(">",x-GamePanel.TILE_SIZE/2,y);
+        }
+    }
+
+    private void drawGameOverScreen() {
+        g2.setColor(new Color(0f,0f,0f,0.5f));
+        g2.fillRect(0,0,GamePanel.SCREEN_WIDTH,GamePanel.SCREEN_HEIGHT);
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN,80F));
+        String text = "Game Over";
+        g2.setColor(Color.white);
+        int y = GamePanel.SCREEN_HEIGHT/2;
+        int x = getXforCenteredText(text);
+        g2.drawString(text,x,y);
+
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN,30F));
+
+        text = "RETRY";
+        x = getXforCenteredText(text);
+        y += GamePanel.TILE_SIZE;
+        g2.drawString(text,x,y);
+        if(command == Command.RETRY){
+            g2.drawString(">",x-GamePanel.TILE_SIZE/2,y);
+        }
+
+        text = "MENU";
+        x = getXforCenteredText(text);
+        y += GamePanel.TILE_SIZE;
+        g2.drawString(text,x,y);
+        if(command == Command.MENU){
+            g2.drawString(">",x-GamePanel.TILE_SIZE/2,y);
+        }
+    }
+
+    private void drawInventory() {
+        int x = GamePanel.TILE_SIZE/2-10;
+        int y = GamePanel.TILE_SIZE/4;
+
+        g2.setColor(new Color(2,2,2,200));
+        g2.fillRoundRect(x,y,GamePanel.TILE_SIZE,GamePanel.TILE_SIZE,10,10);
+
+        g2.setColor(new Color(190,190,190));
+        g2.setStroke(new BasicStroke(4));
+        g2.drawRoundRect(x-2,y-2,GamePanel.TILE_SIZE+2,GamePanel.TILE_SIZE+2,10,10);
+        if(gp.player.currentItem != null){
+            g2.drawImage(gp.player.currentItem.down1,x+2,y,GamePanel.TILE_SIZE-8,GamePanel.TILE_SIZE-8,null);
+        }
+    }
+
 
     private void drawPlayerLife() {
         int x = GamePanel.SCREEN_WIDTH - GamePanel.TILE_SIZE*3 - GamePanel.TILE_SIZE/3;
         int y = GamePanel.TILE_SIZE/4;
+
+        g2.setColor(new Color(2,2,2,200));
+        g2.fillRoundRect(x,y,GamePanel.TILE_SIZE*gp.player.maxLife+4,GamePanel.TILE_SIZE,10,10);
+
+        g2.setColor(new Color(190,190,190));
+        g2.setStroke(new BasicStroke(4));
+        g2.drawRoundRect(x-2,y-2,GamePanel.TILE_SIZE*gp.player.maxLife+8,GamePanel.TILE_SIZE+4,10,10);
+
+
         int i = 0;
         while(i<gp.player.maxLife){
             g2.drawImage(gp.ui.blankHeartImage,x,y,GamePanel.TILE_SIZE,GamePanel.TILE_SIZE,null);

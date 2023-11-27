@@ -1,5 +1,7 @@
 package main;
 
+import ai.PathFinder;
+import data.SaveLoad;
 import entity.Entity;
 import entity.Player;
 import tile.TileManager;
@@ -8,6 +10,7 @@ import javax.swing.JPanel;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,36 +31,42 @@ public class GamePanel extends JPanel implements Runnable {
     int fps = 60;
 
     // SYSTEM
-    TileManager tileM = new TileManager(this); // Tile object methods
+    public TileManager tileM = new TileManager(this); // Tile object methods
     public KeyHandler keyH = new KeyHandler(this); // Controls keyboard events
     AssetSetter assetSetter = new AssetSetter(this); // Places Objects to right place on screen
     Sound music = new Sound(); // Game song
     Sound soundEffect = new Sound(); // Sound-effects
     public CollisionChecker collisionChecker= new CollisionChecker(this); // Player collision with tile and object
     public UI ui = new UI(this);
-    public EventHandler eventHandler = new EventHandler(this);
+    public SaveLoad saveLoad = new SaveLoad(this);
     Thread gameThread;  // Main-game thread, provides sleep for fps control
 
 
     // ENTITY AND OBJECT
-    private static final int MAX_OBJECTS = 10; // maximum number of objects that can be stored
-    Player player = new Player(this, keyH); // Player Entity
+    private static final int MAX_OBJECTS = 20; // maximum number of objects that can be stored
+    public Player player = new Player(this, keyH); // Player Entity
     public Entity[] objectArray = new Entity[MAX_OBJECTS]; // Stores every Object
     public Entity[] npcPolice = new Entity[10]; // NPC Entity
     ArrayList<Entity> entityList = new ArrayList<>();
+    public PathFinder pathFinder = new PathFinder(this);
 
     // GAME STATE
-    enum GameState{
+    public enum GameState{
         PLAY_STATE,
         PAUSE_STATE,
-        TITLE_STATE
+        TITLE_STATE,
+        GAME_OVER,
+        ESCAPING,
+        ESCAPED
     }
-    GameState gameState;
+    public GameState gameState;
 
     public void setupGame(){
         gameState = GameState.TITLE_STATE;
+        ui.command = UI.Command.NEW_GAME;
         assetSetter.setObject(); // Places every Object to right place on screen
         assetSetter.setNPC(); // Places every npc to right place on screen
+        assetSetter.setCells();
     }
 
     public GamePanel() throws FileNotFoundException {
@@ -130,7 +139,11 @@ public class GamePanel extends JPanel implements Runnable {
                         npcPolice[i].update();
                     }
                     if(npcPolice[i].status == Entity.Status.DEAD){
-                        npcPolice[i] = null;
+                        if(npcPolice[i] != null){
+                            npcPolice[i].currentItem.x = ((npcPolice[i].x+GamePanel.TILE_SIZE/2) / GamePanel.TILE_SIZE) * GamePanel.TILE_SIZE;
+                            npcPolice[i].currentItem.y = ((npcPolice[i].y+GamePanel.TILE_SIZE/2) / GamePanel.TILE_SIZE) * GamePanel.TILE_SIZE;
+                            npcPolice[i] = null;
+                        }
                     }
                 }
             }
@@ -161,14 +174,26 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
 
+            // dont add keycards first, so they are draw before every entity
             for(int i = 0; i<objectArray.length; i++){
                 if(objectArray[i] != null){
-                    entityList.add(objectArray[i]);
+                    if(objectArray[i].type != Entity.Type.BlueKeycard && objectArray[i].type != Entity.Type.RedKeycard){
+                        entityList.add(objectArray[i]);
+                    }
                 }
             }
 
             // Sort
             Collections.sort(entityList, Comparator.comparingInt(e -> e.y));
+
+            // add keycards later, so they are draw before every entity
+            for(int i = 0; i<objectArray.length; i++){
+                if(objectArray[i] != null){
+                    if(objectArray[i].type == Entity.Type.BlueKeycard || objectArray[i].type == Entity.Type.RedKeycard){
+                        entityList.add(0,objectArray[i]);
+                    }
+                }
+            }
 
             // Draw entities
             for(int i = 0; i < entityList.size(); i++){
@@ -195,5 +220,25 @@ public class GamePanel extends JPanel implements Runnable {
         soundEffect.setFile(i);
         soundEffect.play();
         // not need to be looped
+    }
+
+    public void retry(){
+        player.setDefaultValues();
+        player.setDefaultHealthAndItem();
+        assetSetter.setObject();
+        assetSetter.setNPC();
+        File f = new File("save.dat");
+        if(f.exists()){
+            this.saveLoad.load();
+        }
+
+        gameState = GameState.PLAY_STATE;
+    }
+
+    public void restart(){
+        player.setDefaultValues();
+        player.setDefaultHealthAndItem();
+        assetSetter.setObject();
+        assetSetter.setNPC();
     }
 }

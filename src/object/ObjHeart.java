@@ -14,7 +14,7 @@ public class ObjHeart extends Entity {
         super(gp);
         this.gp = gp;
 
-        name = "Heart";
+        type = Type.Heart;
         imageHeart = setup("objects/heart",GamePanel.TILE_SIZE,GamePanel.TILE_SIZE);
         imageBlankHeart = setup("objects/blank_heart",GamePanel.TILE_SIZE,GamePanel.TILE_SIZE);
     }
