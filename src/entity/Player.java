@@ -1,19 +1,25 @@
 package entity;
 
-import data.SaveLoad;
 import main.GamePanel;
 import main.KeyHandler;
 import main.UI;
-import object.ObjBlueKeycard;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.Serializable;
 
+/** The playable character in the game
+ */
 public class Player extends Entity {
+    /** The main game panel
+     */
     GamePanel gp;
+    /** The key(input) handler
+     */
     KeyHandler keyH;
 
+    /** The constructor of the player, setting default values
+     * @param gp - the main game panel
+     * @param keyH - the key(input) handler
+     */
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp);
         this.gp = gp;
@@ -41,6 +47,8 @@ public class Player extends Entity {
         solidAreaDefaultY = solidArea.y;
     }
 
+    /** Setting default position and health/item of player
+     */
     public void setDefaultValues() {
         speed = DEFAULT_SPEED;
 
@@ -49,6 +57,8 @@ public class Player extends Entity {
         setDefaultHealthAndItem();
     }
 
+    /** Setting up player's images using setup() function
+     */
     public void getPlayerImage() {
         up1 = setup("player/up1", GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
         up2 = setup("player/up2", GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
@@ -59,7 +69,8 @@ public class Player extends Entity {
         right1 = setup("player/right1", GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
         right2 = setup("player/right2", GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
     }
-
+    /** Setting up player's attacking images using setup() function
+     */
     public void getPlayerAttackImage() {
         attackUp1 = setup("player/hit_up1", GamePanel.TILE_SIZE, GamePanel.TILE_SIZE * 2);
         attackUp2 = setup("player/hit_up2", GamePanel.TILE_SIZE, GamePanel.TILE_SIZE * 2);
@@ -71,11 +82,20 @@ public class Player extends Entity {
         attackRight2 = setup("player/hit_right2", GamePanel.TILE_SIZE * 2, GamePanel.TILE_SIZE);
     }
 
-
+    /** Overriding the main update(), every frame
+     * checking collision
+     * knock back effect
+     * walking animation
+     * interacting
+     * checking health status
+     * invincibility
+     * attacking
+     */
     public void update() {
-        if(checkEscaped()){
+        if(checkEscaped()){ // IF player has escaped the prison
             gp.gameState = GamePanel.GameState.ESCAPED;
             gp.ui.command = UI.Command.MENU;
+            gp.playSoundEffect(13); // Victory sound effect
         }
 
         // Check tile collision, and reset at beginning to check every frame
@@ -84,15 +104,16 @@ public class Player extends Entity {
         collisionOnLeft = false;
         collisionOnRight = false;
 
-        if(knockBack) {
+        if(knockBack) { // being knock backed
             checkCollision();
 
+            // hit something while knocked back, so stop knock back
             if (collisionOnUp || collisionOnDown || collisionOnLeft || collisionOnRight) {
                 knockBackCounter = 0;
                 knockBack = false;
                 speed = DEFAULT_SPEED;
             }
-            else{
+            else{ // did not collide with anything so knock back
                 if(knockBackDirection.equals("up") && !collisionOnUp){ // If collision upwards false, player can move up
                     y -= speed;
                 }
@@ -105,6 +126,7 @@ public class Player extends Entity {
                 else if(knockBackDirection.equals("right") && !collisionOnRight){ // If collision to the right is false, player can move right
                     x += speed;
                 }
+                // Walking animation and sound
                 spriteCounter++;
                 if (spriteCounter > 20 && !direction.equals("idle")) {
                     if (spriteNum == 1) {
@@ -118,6 +140,7 @@ public class Player extends Entity {
                 }
             }
 
+            // Length of knock back
             knockBackCounter++;
             if(knockBackCounter == 10){
                 knockBackCounter = 0;
@@ -125,10 +148,10 @@ public class Player extends Entity {
                 speed = DEFAULT_SPEED;
             }
         }
-        else if (attacking) {
+        else if (attacking) { // Player is currently attacking
             attacking();
         }
-        else if(interacting){
+        else if(interacting){ // Player is currently interacting
             interacting();
         }
         else{
@@ -155,28 +178,27 @@ public class Player extends Entity {
                         direction = "right";
                         checkCollision(direction);
                     }
-                    if (keyH.shiftPressed && !attacking) {
+                    if (keyH.shiftPressed && !attacking) { // Sprinting
                         speed = (int) (DEFAULT_SPEED * 1.8);
                     } else {
                         speed = DEFAULT_SPEED;
                     }
-                    if (keyH.spacePressed) {
+                    if (keyH.spacePressed) { // Attacking
                         attacking = true;
                         gp.playSoundEffect(4);
                     }
-
 
                     // The update() is called 60(FPS) times a second
                     spriteCounter++; // every frame this is increased by 1
                     spriteCounter = changeSpriteCounter(spriteCounter, gp);
                 }
-                if(keyH.interactPressed){
+                if(keyH.interactPressed){ // interacting, block movement
                     interacting = true;
                 }
                 keyH.spacePressed = false;
 
             }
-            if (invincible) {
+            if (invincible) { // if player is currently invincible, check for how long
                 invincibleCounter++;
                 if (invincibleCounter > 40) {
                     invincible = false;
@@ -184,21 +206,28 @@ public class Player extends Entity {
                 }
             }
 
+            // Player dies
             if(life <= 0){
                 gp.gameState = GamePanel.GameState.GAME_OVER;
+                gp.playSoundEffect(12);
                 gp.ui.command =  UI.Command.RETRY;
             }
         }
     }
 
+    /** Check if player has escaped from prison or not, by checking if player has reached a tile
+     * @return if player has escaped or not
+     */
     private boolean checkEscaped() {
         if(this.x >= GamePanel.SCREEN_WIDTH - GamePanel.TILE_SIZE - GamePanel.TILE_SIZE/4){
-            gp.gameState = GamePanel.GameState.ESCAPED;
             return true;
         }
         return false;
     }
 
+    /** Check if player is colliding with anything
+     * @param direction - the player is facing
+     */
     private void checkCollision(String direction) {
         // Check tile collision
         gp.collisionChecker.checkTile(this);
@@ -225,6 +254,11 @@ public class Player extends Entity {
         }
     }
 
+    /** Change sprite based on player is sprinting or not
+     * @param spriteCounter - counter for walking animation
+     * @param gp - the main game panel
+     * @return the current spriteCounter, because it could be set to zero
+     */
     private int changeSpriteCounter(int spriteCounter, GamePanel gp) {
         if (keyH.shiftPressed ? spriteCounter > 10 : spriteCounter > 20) {
             if (spriteNum == 1) {
@@ -241,6 +275,8 @@ public class Player extends Entity {
         return spriteCounter;
     }
 
+    /** Player is interacting with an object
+     */
     private void interacting() {
         interactCounter++;
 
@@ -258,35 +294,45 @@ public class Player extends Entity {
         }
     }
 
+    /** Player is damaging the npc, in the array of npc-s, at a given index
+     *  And knock back it, if it has more than 1 health
+     * @param i - index of npc in the npc array
+     */
     public void damageNPC(int i) {
-        if(i != -1){
-            if(!gp.npcPolice[i].invincible){
-                if(gp.npcPolice[i].life > 1){
+        if(i != -1){ // if player has hit any npc
+            if(!gp.npcPolice[i].invincible){ // npc is not invincible
+                if(gp.npcPolice[i].life > 1){ // npc has more than 1 life the knockback
                     knockBack(gp.npcPolice[i],this);
                 }
-                gp.npcPolice[i].onPath = true;
+                gp.npcPolice[i].onPath = true; // now npc follows player
+                if(gp.npcPolice[i].life == gp.npcPolice[i].maxLife){
+                    gp.playSoundEffect(9); // npc whistles
+                }
                 gp.npcPolice[i].life -= 1;
-                gp.npcPolice[i].invincible = true;
-                gp.playSoundEffect(5);
+                gp.npcPolice[i].invincible = true; // npc is now invincible
+                gp.playSoundEffect(5); // npc hurt sound effect
                 if(gp.npcPolice[i].life <= 0){
-                    gp.npcPolice[i].status = Status.DYING;
+                    gp.npcPolice[i].status = Status.DYING; // NPC is dying
                 }
             }
         }
     }
 
-    // Parameter is the i. number of object in the Objects array(ObjectArray)
+    /** Player interacts with an object, so check which object
+     * @param i -index of object in the Objects array(ObjectArray)
+     */
     public void interactWithObject(int i) {
         if (i != (-1) && gp.objectArray[i] != null) { // if remains -1(base), did not touch any object
             switch (gp.objectArray[i].type) {
-                case BlueKeycard, RedKeycard:
+                case BlueKeycard, RedKeycard: // Any keycard
+                    // Player has no item
                     if(currentItem == null){
                         // If Player has touched the keycard remove it from screen,
                         gp.playSoundEffect(2); // pickup sound
                         gp.objectArray[i].x = -1 * GamePanel.TILE_SIZE;
                         currentItem = gp.objectArray[i];
                     }
-                    else{
+                    else{ // player has already a keycard so swap them
                         swapObjects(currentItem,gp.objectArray[i]);
                         gp.playSoundEffect(2); // pickup sound
                         currentItem = gp.objectArray[i];
@@ -294,8 +340,8 @@ public class Player extends Entity {
                     break;
 
                 case BlueDoor:
-                    // If Player has touched the door and has any key(>0)
-                    // then remove the door, and use one key(-1 key)
+                    // If Player has touched a blue door and has blue keycard
+                    // then remove the door, and use blue keycard
                     if (currentItem!=null && currentItem.type == Type.BlueKeycard) {
                         if (gp.objectArray[i].objectSpriteNum == 0) {
                             gp.playSoundEffect(3);
@@ -313,12 +359,12 @@ public class Player extends Entity {
                         }
                     }
                     else{
-                        gp.playSoundEffect(7); // denied
+                        gp.playSoundEffect(7); // denied sound effect
                     }
                     break;
                 case RedDoor:
-                    // If Player has touched the door and has any key(>0)
-                    // then remove the door, and use one key(-1 key)
+                    // If Player has touched the red door and has red keycard
+                    // then remove the door, and use the red keycard
                     if (currentItem!=null && currentItem.type == Type.RedKeycard) {
                         if (gp.objectArray[i].objectSpriteNum == 0) {
                             gp.playSoundEffect(3);
@@ -327,23 +373,33 @@ public class Player extends Entity {
                         if (gp.objectArray[i].objectSpriteNum == 1) {
                             currentItem = null;
                             gp.objectArray[i] = null;
-                            gp.saveLoad.save();
                         }
                     }
                     else{
-                        gp.playSoundEffect(7); // denied
+                        gp.playSoundEffect(7); // denied sound effect
                     }
+                    break;
+                case Bed:
+                    gp.saveLoad.save();
+                    gp.player.x = gp.objectArray[i].x;
+                    gp.player.y = GamePanel.TILE_SIZE*2;
+                    gp.gameState = GamePanel.GameState.SAVING;
+                    gp.playSoundEffect(14);
                     break;
 
                 default:
                     break;
             }
         }
-        interacting = false;
+        interacting = false; // interacting is over
     }
 
+    /** Swap the current item of the player with the one the player interacts with
+     * @param currentItem - player's current item
+     * @param entity - the keycard(object) to swap to
+     */
     public void swapObjects(Entity currentItem, Entity entity) {
-
+        // Basic x and y coordinate change
         int tempX = currentItem.x;
         currentItem.x = ((this.x+GamePanel.TILE_SIZE/2) / GamePanel.TILE_SIZE) * GamePanel.TILE_SIZE;
         entity.x = tempX;
@@ -353,9 +409,11 @@ public class Player extends Entity {
         entity.y = tempY;
     }
 
+    /** Set the default starting postion when new game starts, and direction
+     */
     public void setDefaultPositions(){
-        x = GamePanel.SCREEN_WIDTH / 2 - GamePanel.TILE_SIZE / 2;
-        y = GamePanel.SCREEN_HEIGHT / 2 - GamePanel.TILE_SIZE / 2;
+        x = GamePanel.TILE_SIZE * 2;
+        y = GamePanel.TILE_SIZE * 3;
         direction = "down";
     }
     public void setDefaultHealthAndItem(){

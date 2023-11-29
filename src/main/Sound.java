@@ -4,13 +4,22 @@ import javax.sound.sampled.*;
 import java.io.IOException;
 import java.net.URL;
 
+/** Handling sound effects
+ */
 public class Sound {
+    /** Maximum number of sounds that can hold the array
+     */
+    private static final int MAX_SOUND_URL = 15; // Maximum number of sounds can be stored for the game
 
-    private static final int MAX_SOUND_URL = 10; // Maximum number of sounds can be stored for the game
-
-    Clip clip; // It has start, stop and loop methods for sounds
+    /** Starts and stops sound effects
+     */
+    Clip clip; // It has start, stop for sounds
+    /** Stores sound effects
+     */
     URL[] soundURL; // Stores the sounds(wav) of the game (songs,and sound-effects)
 
+    /** Creates sounds array, and loads in sound effects from "res" directory
+     */
     public Sound(){
         soundURL = new URL[MAX_SOUND_URL];
         // Main song
@@ -25,8 +34,18 @@ public class Sound {
         soundURL[5] = getClass().getClassLoader().getResource("sound/hurt.wav");
         soundURL[6] = getClass().getClassLoader().getResource("sound/death.wav");
         soundURL[7] = getClass().getClassLoader().getResource("sound/denied.wav");
+        soundURL[8] = getClass().getClassLoader().getResource("sound/zap.wav");
+        soundURL[9] = getClass().getClassLoader().getResource("sound/whistle.wav");
+        soundURL[10] = getClass().getClassLoader().getResource("sound/menu_step.wav");
+        soundURL[11] = getClass().getClassLoader().getResource("sound/menu_select.wav");
+        soundURL[12] = getClass().getClassLoader().getResource("sound/gameover.wav");
+        soundURL[13] = getClass().getClassLoader().getResource("sound/escaped.wav");
+        soundURL[14] = getClass().getClassLoader().getResource("sound/bed.wav");
     }
 
+    /** Cretes clip of sound with the given index, the index says which sound in array
+     * @param i - index of sound in sound array
+     */
     public void setFile(int i){
         try{
             // Creates clip of i. number of sound from array of sounds
@@ -38,13 +57,10 @@ public class Sound {
             throw new RuntimeException(e); // the AudioInputStream requires all of these
         }
     }
+
+    /** Plays sound-effect
+     */
     public void play(){
         clip.start();
     } // Plays the sound
-    public void loop(){
-        clip.loop(Clip.LOOP_CONTINUOUSLY);
-    } // Loop the sound until it's stopped
-    public void stop(){
-        clip.stop();
-    } // Stops the sound
 }

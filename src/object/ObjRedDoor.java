@@ -5,9 +5,15 @@ import main.GamePanel;
 
 import java.io.Serializable;
 
+/** The red door that can be opened with red keycard
+ */
 public class ObjRedDoor extends Entity {
+    /** The main game panel
+     */
     GamePanel gp;
-
+    /** Sets attributes and image of red door
+     * @param gp - the main game panel
+     */
     public ObjRedDoor(GamePanel gp){
         super(gp);
         this.gp = gp;

@@ -3,7 +3,13 @@ package main;
 import javax.swing.JFrame;
 import java.io.FileNotFoundException;
 
+/** The main class of the application, creates window and starts game
+ */
 public class Main {
+    /** The main function of the whole program
+     * @param args - arguments of application (not used)
+     * @throws FileNotFoundException - if file is not being found
+     */
     public static void main(String[] args) throws FileNotFoundException {
         // Setting up Window, with title and be able to close it
         JFrame window = new JFrame();

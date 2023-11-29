@@ -9,13 +9,26 @@ import java.io.*;
 import java.util.Objects;
 import java.util.Scanner;
 
-
+/** Manages tiles and has the methods for tiles.
+ */
 public class TileManager {
+    /** The main game panel
+     */
     GamePanel gp;
+    /** Stores tiles
+     */
     public Tile[] tile;
+    /** Stores the type of tiles in the map at position
+     */
     public int[][] mapTileNum;
-    private final Integer MAX_TILE_TYPES = 10; // The maximum number of tile types, can be less but not more of this
+    /** Maximum number of tile types, can be less but not more of this
+     */
+    private final Integer MAX_TILE_TYPES = 10;
 
+    /** Constructor that creates the tile type holder array, get images of tiles, and map layout
+     * @param gp
+     * @throws FileNotFoundException
+     */
     public TileManager(GamePanel gp) throws FileNotFoundException {
         this.gp = gp;
         tile = new Tile[MAX_TILE_TYPES]; // array of type of tiles exists
@@ -24,6 +37,8 @@ public class TileManager {
         loadMap("res/maps/map01.txt"); // Loads first map in
     }
 
+    /** Set images of tiles using setup() function
+     */
     public void getTileImage(){
             // Reading in tile images from res directory
             //STONE WALL
@@ -40,6 +55,11 @@ public class TileManager {
             setup(8,"concrete",false);
     }
 
+    /** Loads images for tiles from "res" dictionary
+     * @param index - which tile in tiles matrix
+     * @param imagePath - the name of the image without ".png"
+     * @param isSolidTile - whether the tile is solid
+     */
     public void setup(int index, String imagePath,boolean isSolidTile){
         UtilityTool uTool = new UtilityTool();
 
@@ -52,6 +72,11 @@ public class TileManager {
             throw new RuntimeException(e);
         }
     }
+
+    /** Loads the map layout from the map txt
+     * @param filePath - the path to the map file
+     * @throws FileNotFoundException - if map file is not found
+     */
     public void loadMap(String filePath) throws FileNotFoundException {
             // Load map from txt file, that is given in parameter(path)
         try {
@@ -78,6 +103,9 @@ public class TileManager {
         }
     }
 
+    /** Drawing all tiles to the screen
+     * @param g2
+     */
     public void draw(Graphics2D g2){
         // Draw all tiles
         int col = 0;

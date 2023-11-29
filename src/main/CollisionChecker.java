@@ -4,12 +4,26 @@ import entity.Entity;
 
 import java.io.Serializable;
 
+/** Collision checker, that checks collision between
+ * entity - object
+ * entity(npc) - player
+ * entity - tile
+ */
 public class CollisionChecker {
+    /** The main game panel
+     */
     GamePanel gp;
+
+    /** Constructor, that sets the main game panel
+     * @param gp - the main game panel
+     */
     public CollisionChecker(GamePanel gp){
         this.gp = gp;
     }
 
+    /** Checking collision between given entity and the tiles(solid)
+     * @param entity - the entity to check collision on
+     */
     public void checkTile(Entity entity){
         // Stores the surrounding coordinates of entity, and row,column to check collision on them
         int entityLeftX = entity.x + entity.solidArea.x;
@@ -17,6 +31,7 @@ public class CollisionChecker {
         int entityTopY = entity.y + entity.solidArea.y;
         int entityBottomY = entityTopY + entity.solidArea.y;
 
+        // Each surrounding column and row
         int entityLeftCol = entityLeftX/ GamePanel.TILE_SIZE;
         int entityRightCol = entityRightX/ GamePanel.TILE_SIZE;
         int entityTopRow = entityTopY/ GamePanel.TILE_SIZE;
@@ -101,6 +116,12 @@ public class CollisionChecker {
 
     }
 
+    /** Checking collision between given entity and the object
+     * @param entity - if entity is knocked back, the direction of this entity is needed
+     * @param isPlayer - if the current entity that is being check is the player(true)
+     *                 because later player can interact with these objects (npc-s can't)
+     * @return the object's index in the objects array
+     */
     public int checkObject(Entity entity, boolean isPlayer){
         // Check which object is player colliding with
         int index = -1; // base number -1 (not possible)
@@ -122,7 +143,6 @@ public class CollisionChecker {
                 // Get the object's solid area position(Object hitbox)
                 gp.objectArray[i].solidArea.x = gp.objectArray[i].x + gp.objectArray[i].solidArea.x;
                 gp.objectArray[i].solidArea.y = gp.objectArray[i].y + gp.objectArray[i].solidArea.y;
-
 
                 switch (direction){
                     case "up":
@@ -192,7 +212,11 @@ public class CollisionChecker {
         return index;
     }
 
-    //NPC
+    /** Check collision between two entity
+     * @param entity - if entity is knocked back, the direction of this entity is needed
+     * @param target - all the given entities are being checked if collide with this one
+     * @return the index of the entity in the NPCs array
+     */
     public int checkEntity(Entity entity, Entity[] target){
         // Check which object is player colliding with
         int index = -1; // base number -1 (not possible)
@@ -267,6 +291,11 @@ public class CollisionChecker {
         return index;
     }
 
+    /**
+     * Check if entity(npc) is colliding with player
+     * @param entity - if entity is knocked back, the direction of this entity is needed
+     * @return true if the entity is colliding with the player(any side)
+     */
     public boolean checkPlayer(Entity entity){
         // Looping through every object
 

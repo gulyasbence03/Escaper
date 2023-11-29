@@ -16,59 +16,110 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-
+/** The main game panel, which is a JPanel, where the game plays and draws images,texts
+ */
 public class GamePanel extends JPanel implements Runnable {
     //GAME SCREEN SETTINGS
+    /** Original size of a tile (pixels)
+     */
     static final int ORIGINAL_TILE_SIZE = 48; //16x16 tile
+    /** Scale for scaling images,tiles up
+     */
     static final int SCALE = 1;
+    /** Current size of tile (pixels)
+     */
     public static final int TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE; // 48 x 48 tile
+    /** Maximum number of columns in the game screen (tiles)
+     */
     public static final int MAX_SCREEN_COL = 16;
+    /** Maximum number of rows in the game screen (tiles)
+     */
     public static final int MAX_SCREEN_ROW = 12;
+    /** The width of the screen (pixels)
+     */
     public static final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL; //768 pixels
+    /** The height of the screen (pixels)
+     */
     public static final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW; //576 pixels
 
-    // FPS
+    /** The number of fps (Frames Per Seconds)
+     */
     int fps = 60;
 
-    // SYSTEM
-    public TileManager tileM = new TileManager(this); // Tile object methods
+    // SYSTEM instantiations
+    /** The TileManager that holds methods for tiles
+     */
+    public TileManager tileM = new TileManager(this); // Tile methods
+    /** The KeyHandler that handles key(input) made events
+     */
     public KeyHandler keyH = new KeyHandler(this); // Controls keyboard events
+    /** The AssetSetter that places assets(objects,npc-s) to the map
+     */
     AssetSetter assetSetter = new AssetSetter(this); // Places Objects to right place on screen
-    Sound music = new Sound(); // Game song
+    /** The Sound that manages sound effects
+     */
     Sound soundEffect = new Sound(); // Sound-effects
+    /** The CollisionChecker that checks different type of collisions
+     */
     public CollisionChecker collisionChecker= new CollisionChecker(this); // Player collision with tile and object
+    /** The UI that displays the ui (inventory, health, currentItem) on screen
+     */
     public UI ui = new UI(this);
+    /** The SaveLoad saves game data to file, and loads back it, creating saving possible
+     */
     public SaveLoad saveLoad = new SaveLoad(this);
+    /** The main and only thread that helps displaying
+     */
     Thread gameThread;  // Main-game thread, provides sleep for fps control
 
-
     // ENTITY AND OBJECT
-    private static final int MAX_OBJECTS = 20; // maximum number of objects that can be stored
-    public Player player = new Player(this, keyH); // Player Entity
+    /** The maximum numbers of objects that can hold the objects array
+     */
+    private static final int MAX_OBJECTS = 35; // maximum number of objects that can be stored
+    /** The array that holds every object
+     */
     public Entity[] objectArray = new Entity[MAX_OBJECTS]; // Stores every Object
+    /** The player that the user controls
+     */
+    public Player player = new Player(this, keyH); // Player Entity
+    /** The array that holds every NPC entity (blue police,red police, fixing police, chef)
+     */
     public Entity[] npcPolice = new Entity[10]; // NPC Entity
+    /** This list is used to create an order of entites, which order tells which entity should be drawn first/on the other
+     */
     ArrayList<Entity> entityList = new ArrayList<>();
+
+    // PATH FINDING
+    /** The pathfinder that creates path finding for npc possible, and entity can follow player
+     */
     public PathFinder pathFinder = new PathFinder(this);
 
     // GAME STATE
+
+    /** States that the game can be in, for example the game can be paused(PAUSE_STATE)
+     */
     public enum GameState{
         PLAY_STATE,
         PAUSE_STATE,
         TITLE_STATE,
         GAME_OVER,
-        ESCAPING,
-        ESCAPED
+        ESCAPED,
+        SAVING
     }
     public GameState gameState;
 
+    /** Sets the game in the beginning state, and place entities and objects into place
+     */
     public void setupGame(){
         gameState = GameState.TITLE_STATE;
         ui.command = UI.Command.NEW_GAME;
         assetSetter.setObject(); // Places every Object to right place on screen
         assetSetter.setNPC(); // Places every npc to right place on screen
-        assetSetter.setCells();
     }
 
+    /** Constructor that sets game window's attributes
+     * @throws FileNotFoundException
+     */
     public GamePanel() throws FileNotFoundException {
         //Set game screen up with attributes
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -82,11 +133,15 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true); // With this GamePanel can be "focused" to receive key input.
     }
 
+    /** Starts the main and only game thread, that controls fps
+     */
     public void startGameThread(){ // Main thread for fps control
         gameThread = new Thread(this);
         gameThread.start();
     }
 
+    /** The main thread being handled, fps being calculated here
+     */
     @Override
     public void run(){
         // THE MAIN GAME LOOP
@@ -128,6 +183,8 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
+    /** After each frame new calculations are being made before drawing to screen
+     */
     public void update(){
         if(gameState == GameState.PLAY_STATE){
             // Player
@@ -151,8 +208,10 @@ public class GamePanel extends JPanel implements Runnable {
     } // updates the player's position, direction, animation sprite etc.
 
     @Override
+    /** Draws each component to screen
+     */
     public void paintComponent(Graphics g){
-        // Draws a given component
+        // Draws every component
         super.paintComponent(g); // The parent class means JPanel here
         Graphics2D g2 = (Graphics2D) g;
 
@@ -168,13 +227,14 @@ public class GamePanel extends JPanel implements Runnable {
 
             // Add entities to the list
             entityList.add(player);
+
             for(int i = 0; i<npcPolice.length;i++){
                 if(npcPolice[i] != null){
                     entityList.add(npcPolice[i]);
                 }
             }
 
-            // dont add keycards first, so they are draw before every entity
+            // don't add keycards first, so they are draw before every entity
             for(int i = 0; i<objectArray.length; i++){
                 if(objectArray[i] != null){
                     if(objectArray[i].type != Entity.Type.BlueKeycard && objectArray[i].type != Entity.Type.RedKeycard){
@@ -183,7 +243,7 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
 
-            // Sort
+            // Sort entities in an order to display them
             Collections.sort(entityList, Comparator.comparingInt(e -> e.y));
 
             // add keycards later, so they are draw before every entity
@@ -210,18 +270,16 @@ public class GamePanel extends JPanel implements Runnable {
         g2.dispose(); // Dispose of this graphics context and release any system resources that it is using.
     }
 
-    public void playMusic(int i){ // plays the given i. number of song in the array of sounds.
-        music.setFile(i);
-        music.play();
-        music.loop(); // the song needs to be looped
-    }
-
+    /** Playing a sound-effect of a given index in the sounds array
+     * @param i - the given index of the sounds array
+     */
     public void playSoundEffect(int i){ // plays i. number of sound effect in the array of sounds
         soundEffect.setFile(i);
         soundEffect.play();
-        // not need to be looped
     }
 
+    /** Loads back from save, and retry from latest save, if there is a save
+     */
     public void retry(){
         player.setDefaultValues();
         player.setDefaultHealthAndItem();
@@ -235,6 +293,8 @@ public class GamePanel extends JPanel implements Runnable {
         gameState = GameState.PLAY_STATE;
     }
 
+    /** Restart the whole game from the beginning
+     */
     public void restart(){
         player.setDefaultValues();
         player.setDefaultHealthAndItem();
