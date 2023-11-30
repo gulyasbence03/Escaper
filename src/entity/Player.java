@@ -218,7 +218,7 @@ public class Player extends Entity {
     /** Check if player has escaped from prison or not, by checking if player has reached a tile
      * @return if player has escaped or not
      */
-    private boolean checkEscaped() {
+    public boolean checkEscaped() {
         if(this.x >= GamePanel.SCREEN_WIDTH - GamePanel.TILE_SIZE - GamePanel.TILE_SIZE/4){
             return true;
         }
