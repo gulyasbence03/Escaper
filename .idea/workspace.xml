@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="82033116-c33b-489e-bf8c-dd817b364a9e" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/javadoc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Escaper - Felhasználói kézikönyv.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Escaper.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Escaper1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Escaper2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Escaper3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/javadoc.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/ai/Node.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/ai/PathFinder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/data/DataStorage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/data/SaveLoad.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/entity/Entity$Status.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/entity/Entity$Type.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/entity/Entity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/entity/NPC_Chef.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/entity/NPC_FIXING.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/entity/NPC_Police.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/entity/Player$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/entity/Player.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/entity/RED_Police.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/main/AssetSetter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/main/CollisionChecker.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/main/GamePanel$GameState.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/main/GamePanel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/main/KeyHandler$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/main/KeyHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/main/Main.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/main/Sound.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/main/UI$Command.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/main/UI.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/main/UtilityTool.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/maps/map01.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/chef1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/chef2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/police_attack_down1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/police_attack_down2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/police_attack_left1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/police_attack_left2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/police_attack_right1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/police_attack_right2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/police_attack_up1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/police_attack_up2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/police_down1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/police_down2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/police_fixing1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/police_fixing2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/police_left1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/police_left2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/police_right1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/police_right2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/police_up1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/police_up2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/red_attack_down1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/red_attack_down2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/red_attack_left1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/red_attack_left2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/red_attack_right1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/red_attack_right2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/red_attack_up1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/red_attack_up2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/red_down1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/red_down2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/red_left1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/red_left2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/red_right1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/red_right2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/red_up1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/npc/red_up2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/object/ObjBedDown.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/object/ObjBedTop.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/object/ObjBlueDoor.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/object/ObjBlueKeycard.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/object/ObjBox.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/object/ObjCell.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/object/ObjFood.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/object/ObjHalfFood.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/object/ObjHeart.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/object/ObjMonitorDown.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/object/ObjMonitorTop.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/object/ObjRedDoor.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/object/ObjRedKeycard.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/object/ObjTable.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/object/ObjToilet.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/objects/beddown.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/objects/bedtop.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/objects/blank_heart.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/objects/blue_door.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/objects/blue_keycard.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/objects/box.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/objects/cell.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/objects/food.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/objects/halffood.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/objects/heart.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/objects/monitor_down.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/objects/monitor_top.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/objects/red_door.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/objects/red_keycard.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/objects/table.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/objects/toilet.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/player/down1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/player/down2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/player/hit_down1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/player/hit_down2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/player/hit_left1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/player/hit_left2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/player/hit_right1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/player/hit_right2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/player/hit_up1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/player/hit_up2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/player/left1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/player/left2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/player/right1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/player/right2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/player/up1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/player/up2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/sound/bed.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/sound/cell_door_opening.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/sound/death.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/sound/denied.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/sound/escaped.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/sound/gameover.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/sound/hurt.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/sound/menu_select.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/sound/menu_step.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/sound/pickup.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/sound/step.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/sound/swing.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/sound/whistle.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/sound/zap.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/tile/Tile.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/tile/TileManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/tiles/concrete.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/tiles/grass.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/tiles/stone.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/tiles/stone_front.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/tiles/stone_front_t.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/tiles/stone_middle.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/tiles/stone_middle_right.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/tiles/stone_top_left.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/tiles/stone_top_right.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Escaper/tiles/stone_top_rightcorner.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/maps/map01.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/chef1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/chef2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/police_attack_down1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/police_attack_down2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/police_attack_left1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/police_attack_left2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/police_attack_right1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/police_attack_right2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/police_attack_up1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/police_attack_up2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/police_down1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/police_down2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/police_fixing1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/police_fixing2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/police_left1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/police_left2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/police_right1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/police_right2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/police_up1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/police_up2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/red_attack_down1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/red_attack_down2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/red_attack_left1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/red_attack_left2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/red_attack_right1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/red_attack_right2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/red_attack_up1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/red_attack_up2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/red_down1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/red_down2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/red_left1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/red_left2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/red_right1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/red_right2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/red_up1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/npc/red_up2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/objects/beddown.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/objects/bedtop.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/objects/blank_heart.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/objects/blue_door.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/objects/blue_keycard.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/objects/box.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/objects/cell.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/objects/food.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/objects/halffood.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/objects/heart.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/objects/monitor_down.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/objects/monitor_top.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/objects/red_door.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/objects/red_keycard.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/objects/table.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/objects/toilet.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/player/down1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/player/down2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/player/hit_down1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/player/hit_down2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/player/hit_left1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/player/hit_left2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/player/hit_right1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/player/hit_right2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/player/hit_up1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/player/hit_up2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/player/left1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/player/left2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/player/right1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/player/right2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/player/up1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/player/up2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/sound/bed.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/sound/cell_door_opening.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/sound/death.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/sound/denied.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/sound/escaped.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/sound/gameover.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/sound/hurt.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/sound/menu_select.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/sound/menu_step.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/sound/pickup.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/sound/step.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/sound/swing.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/sound/whistle.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/sound/zap.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/tiles/concrete.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/tiles/grass.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/tiles/stone.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/tiles/stone_front.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/tiles/stone_front_t.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/tiles/stone_middle.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/tiles/stone_middle_right.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/tiles/stone_top_left.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/tiles/stone_top_right.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/tiles/stone_top_rightcorner.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/save.dat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ai/Node.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ai/PathFinder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/data/DataStorage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/data/SaveLoad.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/Entity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/NPC_Chef.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/NPC_FIXING.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/NPC_Police.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/Player.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entity/RED_Police.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/AssetSetter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/CollisionChecker.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/GamePanel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/KeyHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/Sound.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/UI.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/UtilityTool.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/object/ObjBedDown.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/object/ObjBedTop.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/object/ObjBlueDoor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/object/ObjBlueKeycard.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/object/ObjBox.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/object/ObjCell.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/object/ObjFood.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/object/ObjHalfFood.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/object/ObjHeart.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/object/ObjMonitorDown.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/object/ObjMonitorTop.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/object/ObjRedDoor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/object/ObjRedKeycard.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/object/ObjTable.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/object/ObjToilet.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tile/Tile.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tile/TileManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/MyTest.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 1
+}]]></component>
+  <component name="ProjectId" id="2aAvDKrdRh0KvoHmke8ZjyvtGNq" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "E:/javaprojects/Escaper/Escaper",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="main" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="main.Main" />
+      <module name="Escaper" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="82033116-c33b-489e-bf8c-dd817b364a9e" name="Changes" comment="" />
+      <created>1703774076830</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1703774076830</updated>
+      <workItem from="1703774077882" duration="1518000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
