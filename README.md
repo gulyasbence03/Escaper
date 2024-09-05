@@ -1,8 +1,8 @@
 # Escaper
-My first java project. A 2d game made for Prog3 lab(java course).
+In Escape, you play as a prisoner trying to escape a high-security prison in a retro 2D pixelated world. Navigate through locked doors using keycards and fight off guards as you make your daring escape.
 
 # Takeaways
-As for first project in java, and at that time i was satisfied with it, but looking back of course it's not well designed and mainly copied a tutorial. It is a good example(at least for me) of what could have been done better, what were the main issues, so here are the takeaways and notes after reviewing:
+My first java project. A 2d game made for Prog3 lab(java course). As for first project in java, and at that time i was satisfied with it, but looking back of course it's not well designed and mainly copied a tutorial. It is a good example(at least for me) of what could have been done better, what were the main issues, so here are the takeaways and notes after reviewing:
 
 + Well described and documented. (could be better, but at that time good)
 + Extra work, and not being satisfied with bare minimum, made this small project much better. (at least visually, and in a "game sense")
