@@ -1,6 +1,11 @@
 # Escaper
 In Escape, you play as a prisoner trying to escape a high-security prison in a retro 2D pixelated world. Navigate through locked doors using keycards and fight off guards as you make your daring escape.
 
+![](escaper1.png)
+![](escaper2.png)
+![](escaper3.png)
+![](escaper4.png)
+
 # Takeaways
 My first java project. A 2d game made for Prog3 lab(java course). As for first project in java, and at that time i was satisfied with it, but looking back of course it's not well designed and mainly copied a tutorial. It is a good example(at least for me) of what could have been done better, what were the main issues, so here are the takeaways and notes after reviewing:
 
